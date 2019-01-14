@@ -4,7 +4,7 @@
       <v-card-title primary-title class="headline">Stats</v-card-title>
       <v-card-text>
         <v-layout row wrap>
-          <v-flex column xs2>
+          <v-flex column xs12 sm3 md2>
             <v-layout>
               <span class="subheading">Voting power:</span>
             </v-layout>
@@ -14,12 +14,13 @@
               </v-progress-circular>
             </v-layout>
           </v-flex>
-          <v-divider vertical />
-          <v-flex column xs2 style="padding-left: 20px;">
+          <v-divider class="hidden-md-and-down" vertical />
+          <div class="hidden-sm-and-up" style="padding-top: 150px;"></div>
+          <v-flex column xs8 style="margin-left: 10px; max-width: 12em;">
             <v-layout class="subheading" style="padding-bottom: 5px;">Plan:</v-layout>
             <v-layout>
-              <v-layout xs2>Current plan:</v-layout>
-              <v-layout xs2 justify-end>{{plan}}</v-layout>
+              <v-layout>Current plan:</v-layout>
+              <v-layout justify-end>{{plan}}</v-layout>
             </v-layout>
             <v-divider />
             <v-layout>
