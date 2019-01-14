@@ -1,0 +1,25 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Start server",
+      "program": "${workspaceFolder}/node_modules/.bin/nodemon",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "-e", "ts",
+        "--watch", "server",
+        "--exec", "ts-node --files -P tsconfig.server.json server/index.ts"
+      ],
+      "env": {
+        "SC_HOST": "http://10.211.55.3:3500",
+        "SC_BROADCAST_ACCOUNT": "abc1"
+      },
+      "console": "integratedTerminal"
+    }
+  ]
+}
