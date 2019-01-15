@@ -45,7 +45,7 @@ import { dateToString } from '~/src/util';
 import { Payment } from '~/src/common';
 import { User } from '~/src/user';
 
-@Component({})
+@Component
 export default class extends Vue {
 
   get user(): User {
