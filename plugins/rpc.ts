@@ -1,5 +1,5 @@
-import { NuxtAxiosInstance } from "@nuxtjs/axios";
-import { User } from "~/src/user";
+import { NuxtAxiosInstance } from '@nuxtjs/axios';
+import { User } from '~/src/user';
 
 export interface RpcRequest {
   api: string;

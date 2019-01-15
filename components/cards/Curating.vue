@@ -20,9 +20,10 @@
                   <v-flex class="px-3">
                     <v-slider
                       v-model="authorSettings[0].voteWeight"
-                      :min="0"
+                      :min="1"
                       :max="100"
                       thumb-label
+                      always-dirty
                       persistent-hint
                       hint="The strength of the vote you wish to cast"
                       label="Voting weight"
@@ -35,7 +36,7 @@
                       class="mt-0"
                       hide-details
                       single-line
-                      min=0
+                      min=1
                       max=100
                       type="number"
                     ></v-text-field>
@@ -49,6 +50,7 @@
                       :min="0"
                       :max="1440"
                       thumb-label
+                      always-dirty
                       persistent-hint
                       hint="In minutes, ranges from 0 to 1440"
                       label="Voting delay (minutes)"
@@ -136,7 +138,7 @@ export default class Curating extends Vue {
   @Model(undefined, { default: (): any[] => [defaultAuthorModel()]})
   authorSettings: Author[];
 
-  rules: any = {
+  readonly rules = {
     required: val => (val !== '' && val !== undefined) || 'Required.',
     voteWeight: val => (val >= 0 && val <= 100) || 'Out of range.',
     voteDelay: val => (val >= 0 && val <= 1440) || 'Out of range.',
