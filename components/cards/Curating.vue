@@ -11,10 +11,11 @@
               :class="{ 'author-is-active': isActive(author.author) }">
             <div slot="header">
               <div class="subheading font-weight-medium">{{ author.author }}</div>
-              <div class="caption">{{ author.maxDailyVotes > 0 ? 'Active' : 'Paused'}}</div>
+              <div class="caption">{{ author.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</div>
             </div>
             <v-card>
               <v-card-text>
+                <!-- Start settings -->
                 <v-layout row>
                   <v-flex class="px-3">
                     <v-slider
@@ -92,7 +93,7 @@
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
-
+                <!-- End settings -->
               </v-card-text>
             </v-card>
           </v-expansion-panel-content>
