@@ -2,7 +2,9 @@
   <v-app>
     <v-toolbar dense fixed app>
       <v-toolbar-side-icon>
-        <img src="/steemdunk-logo.png" height="32">
+        <nuxt-link to="/">
+          <img src="/steemdunk-logo.png" height="32">
+        </nuxt-link>
       </v-toolbar-side-icon>
       <v-toolbar-title>Steemdunk</v-toolbar-title>
       <template v-if="loggedIn">
