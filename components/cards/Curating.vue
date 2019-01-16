@@ -17,19 +17,11 @@
               <v-card-text>
                 <!-- Start settings -->
                 <v-layout row>
-                  <v-flex class="px-3">
-                    <v-slider
-                      v-model="authorSettings[0].voteWeight"
-                      :min="1"
-                      :max="100"
-                      thumb-label
-                      always-dirty
-                      persistent-hint
-                      hint="The strength of the vote you wish to cast"
-                      label="Voting weight"
-                    ></v-slider>
+                  <v-flex xs8 md3>
+                    <v-layout class="pt-2 body-2">Voting Weight</v-layout>
+                    <v-layout class="caption">The strength of the vote you wish to cast</v-layout>
                   </v-flex>
-                  <v-flex style="max-width: 60px;">
+                  <v-flex class="pr-3" style="max-width: 60px;">
                     <v-text-field
                       :rules="[rules.required, rules.voteWeight]"
                       v-model="authorSettings[0].voteWeight"
@@ -41,22 +33,23 @@
                       type="number"
                     ></v-text-field>
                   </v-flex>
+                  <v-flex class="hidden-xs-only">
+                    <v-slider
+                      v-model="authorSettings[0].voteWeight"
+                      :min="1"
+                      :max="100"
+                      thumb-label
+                      always-dirty
+                    ></v-slider>
+                  </v-flex>
                 </v-layout>
 
                 <v-layout row>
-                  <v-flex class="px-3">
-                    <v-slider
-                      v-model="authorSettings[0].voteDelay"
-                      :min="0"
-                      :max="1440"
-                      thumb-label
-                      always-dirty
-                      persistent-hint
-                      hint="In minutes, ranges from 0 to 1440"
-                      label="Voting delay (minutes)"
-                    ></v-slider>
+                  <v-flex xs8 md3>
+                    <v-layout class="pt-2 body-2">Voting Delay</v-layout>
+                    <v-layout class="caption">In minutes, ranges from 0 to 1440</v-layout>
                   </v-flex>
-                  <v-flex style="max-width: 60px;">
+                  <v-flex class="pr-3" style="max-width: 60px;">
                     <v-text-field
                       :rules="[rules.required, rules.voteDelay]"
                       v-model="authorSettings[0].voteDelay"
@@ -68,21 +61,23 @@
                       type="number"
                     ></v-text-field>
                   </v-flex>
+                  <v-flex class="hidden-xs-only">
+                    <v-slider
+                      v-model="authorSettings[0].voteDelay"
+                      :min="0"
+                      :max="1440"
+                      thumb-label
+                      always-dirty
+                    ></v-slider>
+                  </v-flex>
                 </v-layout>
 
                 <v-layout row>
-                  <v-flex class="px-3">
-                    <v-slider
-                      v-model="authorSettings[0].maxDailyVotes"
-                      :min="0"
-                      :max="20"
-                      thumb-label
-                      persistent-hint
-                      hint="Maximum daily votes in a 24-hour window"
-                      label="Max daily votes"
-                    ></v-slider>
+                  <v-flex xs8 md3>
+                    <v-layout class="pt-2 body-2">Max Daily Votes</v-layout>
+                    <v-layout class="caption">Maximum daily votes in a 24-hour window</v-layout>
                   </v-flex>
-                  <v-flex style="max-width: 60px;">
+                  <v-flex class="pr-3" style="max-width: 60px;">
                     <v-text-field
                       :rules="[rules.required, rules.maxDailyVotes]"
                       v-model="authorSettings[0].maxDailyVotes"
@@ -93,6 +88,14 @@
                       max=20
                       type="number"
                     ></v-text-field>
+                  </v-flex>
+                  <v-flex class="hidden-xs-only">
+                    <v-slider
+                      v-model="authorSettings[0].maxDailyVotes"
+                      :min="0"
+                      :max="20"
+                      thumb-label
+                    ></v-slider>
                   </v-flex>
                 </v-layout>
                 <!-- End settings -->
