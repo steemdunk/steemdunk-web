@@ -72,15 +72,15 @@ module.exports = {
   */
   axios: {
     // Can be overridden with API_URL_BROWSER
-    browserBaseURL: 'http://localhost:3001',
-    // Can be overridden with API_URL
-    baseURL: (() => {
+    browserBaseURL: (() => {
       if (process.env.NODE_ENV === 'production') {
         return 'https://api.steemdunk.xyz';
       } else {
         return 'http://localhost:3001';
       }
     })(),
+    // Can be overridden with API_URL
+    baseURL: 'http://localhost:3001',
     proxyHeaders: false,
     retry: { retries: 3 }
   },
