@@ -6,11 +6,11 @@
           <img src="/steemdunk-logo.png" height="32">
         </nuxt-link>
       </v-toolbar-side-icon>
-      <v-toolbar-title>Steemdunk</v-toolbar-title>
+      <v-toolbar-title style="cursor: default;">Steemdunk</v-toolbar-title>
       <template v-if="loggedIn">
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <div class="toolbar-text hidden-xs-only" style="padding-right: 16px;">Welcome, {{user.username}}!</div>
+          <div class="toolbar-text hidden-xs-only pr-1" style="cursor: default;">Welcome, {{user.username}}!</div>
           <v-menu offset-y offset-x min-width="200px">
             <v-btn flat slot="activator"><img :src="avatarUrl" height="32"></v-btn>
             <v-list>
