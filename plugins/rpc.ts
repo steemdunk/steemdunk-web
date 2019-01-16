@@ -28,6 +28,9 @@ export default function({ store, $axios }, inject) {
       });
       return res.data;
     } catch (e) {
+      if (e.response === undefined) {
+        throw new Error('Connection refused to API server');
+      }
       throw e;
     }
   });
