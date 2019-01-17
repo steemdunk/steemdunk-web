@@ -11,6 +11,12 @@ export interface RpcResponse {
   error?: any;
 }
 
+export class ApiError extends Error {
+  constructor(msg: string) {
+    super(msg);
+  }
+}
+
 export default function({ store, $axios }, inject) {
   inject('sendApiReq', async function(req: RpcRequest, token?: string): Promise<RpcResponse> {
     const axios: NuxtAxiosInstance = $axios;
@@ -30,6 +36,8 @@ export default function({ store, $axios }, inject) {
     } catch (e) {
       if (e.response === undefined) {
         throw new Error('Connection refused to API server');
+      } else if (e.response.status === 400) {
+        throw new ApiError(e.response.data.error);
       }
       throw e;
     }
