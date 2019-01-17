@@ -43,10 +43,11 @@ export default class extends Vue {
   form: Form;
 
   addAuthor() {
+    this.form.author.error = undefined;
+
     if (!this.form.author.value) {
       this.form.author.error = 'Field is required';
     }
   }
 }
 </script>
-
