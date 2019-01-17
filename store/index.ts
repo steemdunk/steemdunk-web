@@ -56,18 +56,10 @@ export const actions = {
     }
 
     {
-      const data: any[] = (await this.$sendApiReq(<RpcRequest>{
+      const data: Author[] = (await this.$sendApiReq(<RpcRequest>{
         api: 'get_authors'
       })).data;
-
-      let authors = data.map(val => <Author>{
-        author: val.author,
-        voteWeight: val.vote_weight,
-        voteDelay: val.vote_delay,
-        maxDailyVotes: val.max_daily_votes
-      });
-
-      commit('curating', authors);
+      commit('curating', data);
     }
   },
   async curating({ state }): Promise<Author[]> {
