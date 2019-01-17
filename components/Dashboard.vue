@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
-import Curating from './cards/Curating.vue';
+import Curating from './cards/Curating';
 import Stats from './cards/Stats.vue';
 
 @Component({

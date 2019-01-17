@@ -2,6 +2,9 @@
   <v-layout>
     <v-card width="100%">
       <v-card-title primary-title class="headline">Curating</v-card-title>
+      <v-card-actions>
+        <AddAuthor />
+      </v-card-actions>
       <v-card-text>
         <v-expansion-panel v-model="panel[0]" popout>
           <v-expansion-panel-content
@@ -118,6 +121,7 @@
 <script lang="ts">
 import { Vue, Component, Model, Watch, State } from 'nuxt-property-decorator';
 import { RpcRequest } from '~/plugins/rpc';
+import AddAuthor from './AddAuthor.vue';
 import { Author } from '~/src/author';
 
 function defaultAuthorModel(): Author {
@@ -129,7 +133,9 @@ function defaultAuthorModel(): Author {
   };
 }
 
-@Component
+@Component({
+  components: { AddAuthor }
+})
 export default class Curating extends Vue {
 
   @State
