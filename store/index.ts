@@ -16,8 +16,18 @@ export const mutations = {
   user(state: any, user: User) {
     state.user = user;
   },
+  sortCurations(state: any) {
+    state.curating.sort(function(a: Author, b: Author) {
+      return a.author < b.author ? -1 : 1;
+    });
+  },
   curating(state: any, authors: Author[]) {
     state.curating = authors;
+    mutations.sortCurations(state);
+  },
+  addCuration(state: any, author: Author) {
+    state.curating.push(author);
+    mutations.sortCurations(state);
   }
 };
 
