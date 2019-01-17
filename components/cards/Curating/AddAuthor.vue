@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import { Component, Model } from 'nuxt-property-decorator';
+import { Author } from '~/src/author';
 import Vue from 'vue';
 
 interface ErrorableValue {
@@ -39,14 +40,34 @@ function defaultFormModel(): Form {
 @Component
 export default class extends Vue {
 
+  get defaultSettings(): Author {
+    return {
+      author: undefined!,
+      voteDelay: 15,
+      voteWeight: 100,
+      maxDailyVotes: 10
+    };
+  }
+
   @Model(undefined, { default: () => defaultFormModel() })
   form: Form;
 
-  addAuthor() {
-    this.form.author.error = undefined;
+  async addAuthor() {
+    const author = this.form.author;
+    author.error = undefined;
 
-    if (!this.form.author.value) {
-      this.form.author.error = 'Field is required';
+    if (!author.value) return author.error = 'Field is required';
+    try {
+      const res = await this.$sendApiReq({
+        api: 'add_author',
+        params: Object.assign(this.defaultSettings, { author: author.value })
+      });
+      if (res.error) return author.error = res.error;
+
+      this.form.author.value = undefined;
+      this.$store.commit('addCuration', res.data);
+    } catch (e) {
+      this.form.author.error = e.message;
     }
   }
 }
