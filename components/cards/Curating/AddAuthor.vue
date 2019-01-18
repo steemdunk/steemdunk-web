@@ -53,19 +53,20 @@ export default class extends Vue {
   form: Form;
 
   async addAuthor() {
-    const author = this.form.author;
-    author.error = undefined;
+    const authorForm = this.form.author;
+    authorForm.error = undefined;
 
-    if (!author.value) return author.error = 'Field is required';
+    if (!authorForm.value) return authorForm.error = 'Field is required';
     try {
       const res = await this.$sendApiReq({
         api: 'add_author',
-        params: Object.assign(this.defaultSettings, { author: author.value })
+        params: Object.assign(this.defaultSettings, { author: authorForm.value })
       });
-      if (res.error) return author.error = res.error;
+      if (res.error) return authorForm.error = res.error;
 
-      this.form.author.value = undefined;
+      authorForm.value = undefined;
       this.$store.commit('addCuration', res.data);
+      this.$emit('authorAdded', res.data);
     } catch (e) {
       this.form.author.error = e.message;
     }

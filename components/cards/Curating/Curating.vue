@@ -3,13 +3,13 @@
     <v-card width="100%">
       <v-card-title primary-title class="headline">Curating</v-card-title>
       <v-card-actions>
-        <AddAuthor />
+        <AddAuthor @authorAdded="authorAdded" />
       </v-card-actions>
       <v-card-text>
-        <v-expansion-panel v-model="panel[0]" popout>
+        <v-expansion-panel ref="panel" v-model="panel" popout>
           <v-expansion-panel-content
-              v-for="author in curating"
-              :key="author.author"
+              v-for="(author, index) in curating"
+              :key="index"
               class="darken-on-hover"
               :class="{ 'author-is-active': isActive(author.author) }">
             <div slot="header">
@@ -27,7 +27,7 @@
                   <v-flex class="pr-3" style="max-width: 60px;">
                     <v-text-field
                       :rules="[rules.required, rules.voteWeight]"
-                      v-model="authorSettings[0].voteWeight"
+                      v-model="authorSettings.voteWeight"
                       class="mt-0"
                       hide-details
                       single-line
@@ -38,7 +38,7 @@
                   </v-flex>
                   <v-flex class="hidden-xs-only">
                     <v-slider
-                      v-model="authorSettings[0].voteWeight"
+                      v-model="authorSettings.voteWeight"
                       :min="1"
                       :max="100"
                       thumb-label
@@ -55,7 +55,7 @@
                   <v-flex class="pr-3" style="max-width: 60px;">
                     <v-text-field
                       :rules="[rules.required, rules.voteDelay]"
-                      v-model="authorSettings[0].voteDelay"
+                      v-model="authorSettings.voteDelay"
                       class="mt-0"
                       hide-details
                       single-line
@@ -66,7 +66,7 @@
                   </v-flex>
                   <v-flex class="hidden-xs-only">
                     <v-slider
-                      v-model="authorSettings[0].voteDelay"
+                      v-model="authorSettings.voteDelay"
                       :min="0"
                       :max="1440"
                       thumb-label
@@ -83,7 +83,7 @@
                   <v-flex class="pr-3" style="max-width: 60px;">
                     <v-text-field
                       :rules="[rules.required, rules.maxDailyVotes]"
-                      v-model="authorSettings[0].maxDailyVotes"
+                      v-model="authorSettings.maxDailyVotes"
                       class="mt-0"
                       hide-details
                       single-line
@@ -94,7 +94,7 @@
                   </v-flex>
                   <v-flex class="hidden-xs-only">
                     <v-slider
-                      v-model="authorSettings[0].maxDailyVotes"
+                      v-model="authorSettings.maxDailyVotes"
                       :min="0"
                       :max="20"
                       thumb-label
@@ -141,11 +141,8 @@ export default class Curating extends Vue {
   @State
   curating: Author[];
 
-  @Model(undefined, { default: () => [[]] })
-  panel: any[];
-
-  @Model(undefined, { default: (): any[] => [defaultAuthorModel()]})
-  authorSettings: Author[];
+  panel: number|null = null;
+  authorSettings: Author = defaultAuthorModel();
 
   readonly rules = {
     required: val => (val !== '' && val !== undefined) || 'Required.',
@@ -155,18 +152,26 @@ export default class Curating extends Vue {
   };
 
   @Watch('panel')
-  updatePanelState(val: any[]): void {
-    let index = val[0];
+  updatePanelState(index?: number|null): void {
     if (index === null || index === undefined) {
-      this.authorSettings[0] = defaultAuthorModel();
+      this.authorSettings = defaultAuthorModel();
     } else {
-      const author = Object.assign({}, this.curating[index]);
-      this.$set(this.authorSettings, 0, author);
+      this.authorSettings = Object.assign({}, this.curating[index]);
     }
   }
 
   isActive(author: string): boolean {
-    return this.authorSettings[0].author === author;
+    return this.authorSettings.author === author;
+  }
+
+  authorAdded(author: Author) {
+    const index = this.curating.findIndex(a => a.author === author.author);
+    if (index === -1) {
+      console.error('Failed to find index of author:', author.author);
+      return;
+    }
+    this.authorSettings = Object.assign({}, author);
+    this.panel = index;
   }
 }
 </script>
