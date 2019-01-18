@@ -22,16 +22,16 @@
     "nuxt-ts": "^0.2.1",
     "steemdunk-common": "git+https://github.com/steemdunk/steemdunk-common.git#14d4db9",
     "ts-node": "^7.0.1",
-    "vuetify": "^1.2.4"
+    "vuetify": "^1.4.2"
   },
   "devDependencies": {
-    "@types/koa": "^2.0.47",
+    "@types/koa": "^2.0.48",
     "@types/koa-route": "^3.2.4",
     "@types/node": "^10.12.18",
     "nodemon": "^1.11.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "ts-loader": "^5.3.2",
-    "typescript": "^3.2.2"
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.2.4"
   }
 }
