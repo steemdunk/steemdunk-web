@@ -66,7 +66,7 @@ export default class extends Vue {
 
       authorForm.value = undefined;
       this.$store.commit('addCuration', res.data);
-      this.$emit('authorAdded', res.data);
+      this.$emit('author-added', res.data);
     } catch (e) {
       this.form.author.error = e.message;
     }

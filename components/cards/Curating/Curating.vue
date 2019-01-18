@@ -3,7 +3,7 @@
     <v-card width="100%">
       <v-card-title primary-title class="headline">Curating</v-card-title>
       <v-card-actions>
-        <AddAuthor @authorAdded="authorAdded" />
+        <AddAuthor @author-added="authorAdded" />
       </v-card-actions>
       <v-card-text>
         <v-expansion-panel ref="panel" v-model="panel" popout>
