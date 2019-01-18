@@ -18,7 +18,7 @@
             </div>
             <v-card>
               <v-card-text>
-                <AuthorSettings :author-settings="authorSettings" />
+                <AuthorSettings :author-settings="isActive(author.author) ? authorSettings : authorTransition" />
               </v-card-text>
             </v-card>
           </v-expansion-panel-content>
@@ -61,12 +61,15 @@ export default class Curating extends Vue {
 
   panel: number|null = null;
   authorSettings: Author = defaultAuthorModel();
+  authorTransition: Author = defaultAuthorModel();
 
   @Watch('panel')
   updatePanelState(index?: number|null): void {
     if (index === null || index === undefined) {
+      this.authorTransition = Object.assign({}, this.authorSettings);
       this.authorSettings = defaultAuthorModel();
     } else {
+      this.authorTransition = Object.assign({}, this.authorSettings);
       this.authorSettings = Object.assign({}, this.curating[index]);
     }
   }
@@ -81,6 +84,7 @@ export default class Curating extends Vue {
       console.error('Failed to find index of author:', author.author);
       return;
     }
+    this.authorTransition = Object.assign({}, this.authorSettings);
     this.authorSettings = Object.assign({}, author);
     this.panel = index;
   }
