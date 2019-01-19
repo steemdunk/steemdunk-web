@@ -34,6 +34,7 @@ async function start() {
 
   app.use((ctx, next) => {
     ctx.set('X-Frame-Options', 'deny');
+    ctx.set('X-XSS-Protection', '1; mode=block');
     return next();
   });
 

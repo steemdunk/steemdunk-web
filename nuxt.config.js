@@ -4,6 +4,13 @@ module.exports = {
   mode: 'universal',
 
   /*
+  ** Set Content-Security-Policy of the page
+  */
+  render: {
+    csp: true
+  },
+
+  /*
   ** Headers of the page
   */
   head: {
