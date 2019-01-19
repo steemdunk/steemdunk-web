@@ -32,6 +32,11 @@ async function start() {
   consola.info(`Starting in ${app.env} mode`);
   consola.info(`Trusting proxy headers: ${app.proxy}`);
 
+  app.use((ctx, next) => {
+    ctx.set('X-Frame-Options', 'deny');
+    return next();
+  });
+
   app.use(async (ctx, next) => {
     const start = Date.now();
     await next();
