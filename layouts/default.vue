@@ -10,12 +10,16 @@
       <template v-if="loggedIn">
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <div class="toolbar-text hidden-xs-only pr-1" style="cursor: default;">Welcome, {{user.username}}!</div>
-          <v-menu offset-y offset-x min-width="200px">
-            <v-btn flat slot="activator"><img :src="avatarUrl" height="32"></v-btn>
+          <v-menu offset-y offset-x min-width="250px">
+            <v-btn flat slot="activator">
+              <v-layout>
+                <div class="toolbar-text hidden-xs-only pr-3" style="text-transform: none;">Welcome, {{user.username}}!</div>
+                <img :src="avatarUrl" height="32">
+              </v-layout>
+            </v-btn>
             <v-list>
               <v-list-tile avatar>
-                <v-list-tile-avatar><img :src="avatarUrl"></v-list-tile-avatar>
+                <v-list-tile-avatar><img :src="avatarUrl" height="32"></v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title>Profile</v-list-tile-title>
                   <v-list-tile-sub-title>{{user.username}}</v-list-tile-sub-title>
@@ -68,7 +72,7 @@ import { User } from '~/src/user';
     }
 
     get avatarUrl(): string {
-      return `https://steemitimages.com/u/${this.user.username}/avatar/64x64`;
+      return `https://steemitimages.com/u/${this.user.username}/avatar/medium`;
     }
 
     async signOut() {
