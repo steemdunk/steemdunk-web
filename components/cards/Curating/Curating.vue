@@ -6,7 +6,7 @@
         <AddAuthor @author-added="authorAdded" />
       </v-card-actions>
       <v-card-text>
-        <v-expansion-panel v-model="panel" popout>
+        <v-expansion-panel style="overflow: auto; max-height: 450px;" v-model="panel">
           <v-expansion-panel-content
               v-for="(author, index) in curating"
               :key="index"
