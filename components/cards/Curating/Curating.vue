@@ -17,8 +17,18 @@
               <div class="caption">{{ author.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</div>
             </div>
             <v-card>
+              <v-progress-linear
+                :active="saving !== SaveState.NONE"
+                :indeterminate="saving === SaveState.SAVING"
+                :color="saveColor"
+                value="100"
+              />
               <v-card-text>
-                <AuthorSettings :author-settings="isActive(author.author) ? authorSettings : authorTransition" />
+                <AuthorSettings
+                  :author-settings="isActive(author.author) ? authorSettings : authorTransition"
+                  @author-removed="panel = null"
+                  @saving="saving = $event"
+                />
               </v-card-text>
             </v-card>
           </v-expansion-panel-content>
@@ -37,8 +47,8 @@
 
 <script lang="ts">
 import { Vue, Component, Model, Watch, State } from 'nuxt-property-decorator';
+import AuthorSettings, { SaveState } from './Author.vue';
 import { RpcRequest } from '~/plugins/rpc';
-import AuthorSettings from './Author.vue';
 import AddAuthor from './AddAuthor.vue';
 import { Author } from '~/src/author';
 
@@ -56,12 +66,27 @@ function defaultAuthorModel(): Author {
 })
 export default class Curating extends Vue {
 
+  readonly SaveState = SaveState;
+
   @State
   curating: Author[];
 
   panel: number|null = null;
   authorSettings: Author = defaultAuthorModel();
   authorTransition: Author = defaultAuthorModel();
+
+  saving: SaveState = SaveState.NONE;
+
+  get saveColor() {
+    switch (this.saving) {
+      case SaveState.COMPLETE:
+        return 'success';
+      case SaveState.ERROR:
+        return 'error';
+      default:
+        return undefined;
+    }
+  }
 
   @Watch('panel')
   updatePanelState(index?: number|null): void {

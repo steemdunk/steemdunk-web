@@ -9,6 +9,7 @@
         <v-text-field
           :rules="[rules.required, rules.voteWeight]"
           v-model="authorSettings.voteWeight"
+          :disabled="saving === SaveState.SAVING"
           class="mt-0"
           hide-details
           single-line
@@ -20,6 +21,7 @@
       <v-flex class="hidden-xs-only">
         <v-slider
           v-model="authorSettings.voteWeight"
+          :disabled="saving === SaveState.SAVING"
           :min="1"
           :max="100"
           thumb-label
@@ -37,6 +39,7 @@
         <v-text-field
           :rules="[rules.required, rules.voteDelay]"
           v-model="authorSettings.voteDelay"
+          :disabled="saving === SaveState.SAVING"
           class="mt-0"
           hide-details
           single-line
@@ -48,6 +51,7 @@
       <v-flex class="hidden-xs-only">
         <v-slider
           v-model="authorSettings.voteDelay"
+          :disabled="saving === SaveState.SAVING"
           :min="0"
           :max="1440"
           thumb-label
@@ -65,6 +69,7 @@
         <v-text-field
           :rules="[rules.required, rules.maxDailyVotes]"
           v-model="authorSettings.maxDailyVotes"
+          :disabled="saving === SaveState.SAVING"
           class="mt-0"
           hide-details
           single-line
@@ -76,22 +81,50 @@
       <v-flex class="hidden-xs-only">
         <v-slider
           v-model="authorSettings.maxDailyVotes"
+          :disabled="saving === SaveState.SAVING"
           :min="0"
           :max="20"
           thumb-label
         ></v-slider>
       </v-flex>
     </v-layout>
+
+    <v-layout>
+      <v-flex>
+        <v-btn @click="save">Save</v-btn>
+      </v-flex>
+      <v-flex>
+        <v-btn @click="remove">Remove</v-btn>
+      </v-flex>
+    </v-layout>
+
+    <v-layout>
+      <v-flex v-if="saveError" class="pt-2 subheading font-weight-bold error--text">
+        {{saveError}}
+      </v-flex>
+      <v-flex v-if="saving === SaveState.COMPLETE" class="pt-2 subheading font-weight-bold success--text">
+        <span>Settings saved</span>
+      </v-flex>
+    </v-layout>
   </v-layout>
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'nuxt-property-decorator';
+import { Component, Prop, Watch } from 'nuxt-property-decorator';
 import { Author } from '~/src/author';
 import Vue from 'vue';
 
+export enum SaveState {
+  NONE,
+  COMPLETE,
+  SAVING,
+  ERROR
+}
+
 @Component
 export default class extends Vue {
+
+  readonly SaveState = SaveState;
 
   readonly rules = {
     required: val => (val !== '' && val !== undefined) || 'Required.',
@@ -102,5 +135,61 @@ export default class extends Vue {
 
   @Prop()
   authorSettings: Author;
+
+  savingFlag: SaveState = SaveState.NONE;
+  saveError: string|null = null;
+
+  set saving(state) {
+    this.savingFlag = state;
+    this.$emit('saving', state);
+  }
+
+  get saving() {
+    return this.savingFlag;
+  };
+
+  @Watch('authorSettings', { deep: true })
+  authorSettingsUpdated() {
+    this.saving = SaveState.NONE;
+    this.saveError = null;
+  }
+
+  async save() {
+    this.saving = SaveState.SAVING;
+    this.saveError = null;
+
+    const author = Object.assign({}, this.authorSettings);
+    try {
+      await this.$sendApiReq({
+        api: 'update_author',
+        params: author
+      });
+      this.saving = SaveState.COMPLETE;
+    } catch (e) {
+      this.saveError = e.message;
+      this.saving = SaveState.ERROR;
+      console.log('Saving author error', author, e);
+    }
+  }
+
+  async remove() {
+    this.saving = SaveState.SAVING;
+    this.saveError = null;
+
+    const author = this.authorSettings.author;
+    try {
+      await this.$sendApiReq({
+        api: 'remove_author',
+        params: { author }
+      });
+      this.saving = SaveState.NONE;
+      this.$store.commit('rmCuration', author);
+      this.$emit('author-removed');
+    } catch (e) {
+      this.saveError = e.message;
+      this.saving = SaveState.ERROR;
+      console.log('Error removing author', author, e);
+    }
+  }
 }
 </script>
