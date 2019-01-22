@@ -9,7 +9,7 @@
         <v-text-field
           :rules="[rules.required, rules.voteWeight]"
           v-model="authorSettings.voteWeight"
-          :disabled="saving === SaveState.SAVING"
+          :disabled="saving === SaveState.SAVING || authorSettings.maxDailyVotes === 0"
           class="mt-0"
           hide-details
           single-line
@@ -21,7 +21,7 @@
       <v-flex class="hidden-xs-only">
         <v-slider
           v-model="authorSettings.voteWeight"
-          :disabled="saving === SaveState.SAVING"
+          :disabled="saving === SaveState.SAVING || authorSettings.maxDailyVotes === 0"
           :min="1"
           :max="100"
           thumb-label
@@ -39,7 +39,7 @@
         <v-text-field
           :rules="[rules.required, rules.voteDelay]"
           v-model="authorSettings.voteDelay"
-          :disabled="saving === SaveState.SAVING"
+          :disabled="saving === SaveState.SAVING || authorSettings.maxDailyVotes === 0"
           class="mt-0"
           hide-details
           single-line
@@ -51,7 +51,7 @@
       <v-flex class="hidden-xs-only">
         <v-slider
           v-model="authorSettings.voteDelay"
-          :disabled="saving === SaveState.SAVING"
+          :disabled="saving === SaveState.SAVING || authorSettings.maxDailyVotes === 0"
           :min="0"
           :max="1440"
           thumb-label
@@ -63,7 +63,9 @@
     <v-layout row>
       <v-flex xs8 md3>
         <v-layout class="pt-2 body-2">Max Daily Votes</v-layout>
-        <v-layout class="caption">Maximum daily votes in a 24-hour window</v-layout>
+        <v-layout class="caption">
+          <span>Maximum daily votes in a 24-hour window, set to 0 to pause voting</span>
+        </v-layout>
       </v-flex>
       <v-flex class="pl-2 pr-3" style="max-width: 65px;">
         <v-text-field

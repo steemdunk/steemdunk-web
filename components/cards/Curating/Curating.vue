@@ -6,7 +6,7 @@
         <AddAuthor @author-added="authorAdded" />
       </v-card-actions>
       <v-card-text>
-        <v-expansion-panel ref="panel" v-model="panel" popout>
+        <v-expansion-panel v-model="panel" popout>
           <v-expansion-panel-content
               v-for="(author, index) in curating"
               :key="index"
@@ -14,7 +14,12 @@
               :class="{ 'author-is-active': isActive(author.author) }">
             <div slot="header">
               <div class="subheading font-weight-medium">{{ author.author }}</div>
-              <div class="caption">{{ author.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</div>
+              <div v-if="!isActive(author.author)" class="caption">
+                <span>{{ author.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</span>
+              </div>
+              <div v-else>
+                <span>{{ authorSettings.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</span>
+              </div>
             </div>
             <v-card>
               <v-progress-linear
