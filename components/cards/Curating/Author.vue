@@ -5,7 +5,7 @@
         <v-layout class="pt-2 body-2">Voting Weight</v-layout>
         <v-layout class="caption">The strength of the vote you wish to cast</v-layout>
       </v-flex>
-      <v-flex class="pr-3" style="max-width: 60px;">
+      <v-flex class="pl-2 pr-3" style="max-width: 65px;">
         <v-text-field
           :rules="[rules.required, rules.voteWeight]"
           v-model="authorSettings.voteWeight"
@@ -35,7 +35,7 @@
         <v-layout class="pt-2 body-2">Voting Delay</v-layout>
         <v-layout class="caption">In minutes, ranges from 0 to 1440</v-layout>
       </v-flex>
-      <v-flex class="pr-3" style="max-width: 60px;">
+      <v-flex class="pl-2 pr-3" style="max-width: 65px;">
         <v-text-field
           :rules="[rules.required, rules.voteDelay]"
           v-model="authorSettings.voteDelay"
@@ -65,7 +65,7 @@
         <v-layout class="pt-2 body-2">Max Daily Votes</v-layout>
         <v-layout class="caption">Maximum daily votes in a 24-hour window</v-layout>
       </v-flex>
-      <v-flex class="pr-3" style="max-width: 60px;">
+      <v-flex class="pl-2 pr-3" style="max-width: 65px;">
         <v-text-field
           :rules="[rules.required, rules.maxDailyVotes]"
           v-model="authorSettings.maxDailyVotes"
@@ -89,13 +89,9 @@
       </v-flex>
     </v-layout>
 
-    <v-layout>
-      <v-flex>
-        <v-btn @click="save">Save</v-btn>
-      </v-flex>
-      <v-flex>
-        <v-btn @click="remove">Remove</v-btn>
-      </v-flex>
+    <v-layout class="pt-2">
+      <v-btn @click="save" color="info">Save</v-btn>
+      <v-btn @click="remove" color="error">Remove</v-btn>
     </v-layout>
 
     <v-layout>
