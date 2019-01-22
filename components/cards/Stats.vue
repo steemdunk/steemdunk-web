@@ -25,7 +25,7 @@
             <v-divider />
             <v-layout>
               <v-layout>Expires:</v-layout>
-              <v-layout justify-end>{{expiry}}</v-layout>
+              <v-layout justify-end>{{user.premium.plan !== Plan.BRONZE ? expiry : 'Never'}}</v-layout>
             </v-layout>
             <v-divider />
             <v-layout>
@@ -41,12 +41,14 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
+import { Payment, Plan } from '~/src/common';
 import { dateToString } from '~/src/util';
-import { Payment } from '~/src/common';
 import { User } from '~/src/user';
 
 @Component
 export default class extends Vue {
+
+  readonly Plan = Plan;
 
   get user(): User {
     return this.$store.state.user;
