@@ -29,9 +29,15 @@ export const mutations = {
     state.curating.push(author);
     mutations.sortCurations(state);
   },
+  updateCuration(state: any, author: Author) {
+    const curating: Author[] = state.curating;
+    let index = curating.findIndex(v => v.author === author.author);
+    if (index === -1) return;
+    curating[index] = author;
+  },
   rmCuration(state: any, author: string) {
-    let curating: Author[] = state.curating;
-    let index = curating.findIndex(v => v.author === author);
+    const curating: Author[] = state.curating;
+    const index = curating.findIndex(v => v.author === author);
     if (index === -1) return;
     curating.splice(index, 1);
   }

@@ -163,6 +163,7 @@ export default class extends Vue {
         params: author
       });
       this.saving = SaveState.COMPLETE;
+      this.$store.commit('updateCuration', author);
     } catch (e) {
       this.saveError = e.message;
       this.saving = SaveState.ERROR;
