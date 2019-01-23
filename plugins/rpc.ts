@@ -25,7 +25,7 @@ export default function({ store, $axios }, inject) {
       headers.session = token;
     } else {
       const user: User = store.state.user;
-      if (user) headers.session = user.sessionToken;
+      if (user) headers.session = user.session;
     }
     if (!headers.session) throw new Error('session token not provided');
     try {

@@ -1,6 +1,6 @@
+import { User, Settings } from '~/src/user';
 import { RpcRequest } from '~/plugins/rpc';
 import { Author } from '~/src/author';
-import { User } from '~/src/user';
 import Cookies from 'cookies';
 
 export const state = () => ({
@@ -15,6 +15,9 @@ export const mutations = {
   },
   user(state: any, user: User) {
     state.user = user;
+  },
+  userSettings(state: any, settings: Settings) {
+    state.user.settings = settings;
   },
   sortCurations(state: any) {
     state.curating.sort(function(a: Author, b: Author) {
@@ -53,19 +56,7 @@ export const actions = {
       const data = (await this.$sendApiReq(<RpcRequest>{
         api: 'get_account'
       }, session)).data;
-
-      const user: User = {
-        sessionToken: data.session,
-        username: data.username,
-        premium: {
-          plan: data.premium.plan,
-          expiry: new Date(data.premium.expiry)
-        },
-        steem: {
-          votingPowerPercent: data.steem.voting_power_percent
-        }
-      };
-      commit('user', user);
+      commit('user', data);
     } catch (e) {
       if (e.response && e.response.status === 401) {
         // Session expired
