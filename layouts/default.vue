@@ -80,7 +80,7 @@ import { User } from '~/src/user';
         const user: User = this.$store.state.user;
         await this.$axios.post('/signout', undefined, {
           headers: {
-            session: user.sessionToken
+            session: user.session
           }
         });
         this.$store.commit('reset');
