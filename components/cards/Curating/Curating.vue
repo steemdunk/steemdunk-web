@@ -8,10 +8,13 @@
       <v-card-text>
         <v-expansion-panel style="overflow: auto; max-height: 450px;" v-model="panel">
           <v-expansion-panel-content
-              v-for="(author, index) in curating"
-              :key="index"
-              class="darken-on-hover"
-              :class="{ 'author-is-active': isActive(author.author) }">
+            v-for="(author, index) in curating"
+            :key="index"
+            class="darken-on-hover"
+            :class="{ 'author-is-active': isActive(author.author) }"
+            ripple
+            lazy
+          >
             <div slot="header">
               <div class="subheading font-weight-medium">{{ author.author }}</div>
               <div v-if="!isActive(author.author)" class="caption">
