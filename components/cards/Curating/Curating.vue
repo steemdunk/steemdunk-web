@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title primary-title class="headline">Curating</v-card-title>
-    <v-card-actions>
+    <v-card-actions class="pl-3">
       <AddAuthor @author-added="authorAdded" />
     </v-card-actions>
     <v-card-text>
