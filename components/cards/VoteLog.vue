@@ -3,6 +3,7 @@
     <v-card-title primary-title class="headline">Vote Log (7 days retention)</v-card-title>
     <v-card-text>
       <v-data-table
+        no-data-text="Looks like you haven't voted on anyone yet, go add some authors!"
         :headers="headers"
         :items="voteLog"
         disable-initial-sort
