@@ -6,6 +6,7 @@
       label="Add Author"
       append-icon="add_circle"
       @click:append="addAuthor"
+      @keypress.enter="$event.preventDefault(); addAuthor()"
       @blur="form.author.error=undefined"
       :error="!!form.author.error"
       :error-messages="form.author.error"
