@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
-import Dashboard from '~/components/Dashboard.vue';
+import Dashboard from '~/components/Dashboard';
 import Landing from '~/components/Landing.vue';
 import { Middleware } from '~/src/middleware';
 
