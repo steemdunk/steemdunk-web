@@ -1,49 +1,47 @@
 <template>
-  <v-layout>
-    <v-card width="100%">
-      <v-card-title primary-title class="headline">Curating</v-card-title>
-      <v-card-actions>
-        <AddAuthor @author-added="authorAdded" />
-      </v-card-actions>
-      <v-card-text>
-        <v-expansion-panel style="overflow: auto; max-height: 450px;" v-model="panel">
-          <v-expansion-panel-content
-            v-for="(author, index) in curating"
-            :key="index"
-            class="darken-on-hover"
-            :class="{ 'author-is-active': isActive(author.author) }"
-            ripple
-            lazy
-          >
-            <div slot="header">
-              <div class="subheading font-weight-medium">{{ author.author }}</div>
-              <div v-if="!isActive(author.author)" class="caption">
-                <span>{{ author.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</span>
-              </div>
-              <div v-else>
-                <span>{{ authorSettings.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</span>
-              </div>
+  <v-card>
+    <v-card-title primary-title class="headline">Curating</v-card-title>
+    <v-card-actions>
+      <AddAuthor @author-added="authorAdded" />
+    </v-card-actions>
+    <v-card-text>
+      <v-expansion-panel style="overflow: auto; max-height: 450px;" v-model="panel">
+        <v-expansion-panel-content
+          v-for="(author, index) in curating"
+          :key="index"
+          class="darken-on-hover"
+          :class="{ 'author-is-active': isActive(author.author) }"
+          ripple
+          lazy
+        >
+          <div slot="header">
+            <div class="subheading font-weight-medium">{{ author.author }}</div>
+            <div v-if="!isActive(author.author)" class="caption">
+              <span>{{ author.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</span>
             </div>
-            <v-card>
-              <v-progress-linear
-                :active="saving !== SaveState.NONE"
-                :indeterminate="saving === SaveState.SAVING"
-                :color="saveColor"
-                value="100"
+            <div v-else>
+              <span>{{ authorSettings.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</span>
+            </div>
+          </div>
+          <v-card>
+            <v-progress-linear
+              :active="saving !== SaveState.NONE"
+              :indeterminate="saving === SaveState.SAVING"
+              :color="saveColor"
+              value="100"
+            />
+            <v-card-text>
+              <AuthorSettings
+                :author-settings="isActive(author.author) ? authorSettings : authorTransition"
+                @author-removed="panel = null"
+                @saving="saving = $event"
               />
-              <v-card-text>
-                <AuthorSettings
-                  :author-settings="isActive(author.author) ? authorSettings : authorTransition"
-                  @author-removed="panel = null"
-                  @saving="saving = $event"
-                />
-              </v-card-text>
-            </v-card>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-card-text>
-    </v-card>
-  </v-layout>
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-card-text>
+  </v-card>
 </template>
 
 <style lang="stylus" scoped>

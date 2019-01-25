@@ -37,9 +37,7 @@
       </template>
     </v-toolbar>
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-content>
     <v-footer fixed app>Steemdunk</v-footer>
   </v-app>
@@ -58,35 +56,35 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
 import { User } from '~/src/user';
 
-  @Component
-  export default class extends Vue {
-    @Prop({ default: 'Steemdunk' })
-    title: string;
+@Component
+export default class extends Vue {
+  @Prop({ default: 'Steemdunk' })
+  title: string;
 
-    get loggedIn(): boolean {
-      return this.user !== undefined;
-    }
+  get loggedIn(): boolean {
+    return this.user !== undefined;
+  }
 
-    get user(): User {
-      return this.$store.state.user;
-    }
+  get user(): User {
+    return this.$store.state.user;
+  }
 
-    get avatarUrl(): string {
-      return `https://steemitimages.com/u/${this.user.username}/avatar/medium`;
-    }
+  get avatarUrl(): string {
+    return `https://steemitimages.com/u/${this.user.username}/avatar/medium`;
+  }
 
-    async signOut() {
-      try {
-        const user: User = this.$store.state.user;
-        await this.$axios.post('/signout', undefined, {
-          headers: {
-            session: user.session
-          }
-        });
-        await this.$store.dispatch('reset');
-      } catch (e) {
-        console.error('Failed to sign out', e);
-      }
+  async signOut() {
+    try {
+      const user: User = this.$store.state.user;
+      await this.$axios.post('/signout', undefined, {
+        headers: {
+          session: user.session
+        }
+      });
+      await this.$store.dispatch('reset');
+    } catch (e) {
+      console.error('Failed to sign out', e);
     }
   }
+}
 </script>

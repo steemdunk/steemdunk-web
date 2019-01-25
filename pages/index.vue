@@ -1,12 +1,10 @@
 <template>
-  <v-layout>
-    <v-container v-if="loggedIn">
-      <Dashboard />
-    </v-container>
-    <v-container v-else>
-      <Landing :loginUrl=loginUrl />
-    </v-container>
-  </v-layout>
+  <div v-if="loggedIn">
+    <Dashboard />
+  </div>
+  <div v-else>
+    <Landing :loginUrl=loginUrl />
+  </div>
 </template>
 
 <script lang="ts">

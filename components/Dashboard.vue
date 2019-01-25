@@ -1,6 +1,6 @@
 <template>
-  <v-layout row wrap>
-    <v-container class="pt-0">
+  <div>
+    <v-container>
       <Stats />
     </v-container>
     <v-container>
@@ -12,7 +12,7 @@
     <v-container>
       <VoteLog />
     </v-container>
-  </v-layout>
+  </div>
 </template>
 
 <script lang="ts">

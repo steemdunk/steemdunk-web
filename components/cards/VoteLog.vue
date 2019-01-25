@@ -1,29 +1,27 @@
 <template>
-  <v-layout>
-    <v-card width="100%">
-      <v-card-title primary-title class="headline">Vote Log (7 days retention)</v-card-title>
-      <v-card-text>
-        <v-data-table
-          :headers="headers"
-          :items="voteLog"
-          disable-initial-sort
-        >
-          <template slot="items" slot-scope="props">
-            <td class="pa-0" style="width: 11em">{{props.item.time}}</td>
-            <td class="pa-0" style="width: 11em">{{props.item.status}}</td>
-            <td class="pa-0 pl-3" style="width: 4em">{{props.item.weight}}</td>
-            <td class="pa-0 pl-3">
-              <a target="_blank" :href="baseUrl + props.item.permlink">{{
-              props.item.permlink.length > 48 ?
-                props.item.permlink.substring(0, 48) + '...'
-                : props.item.permlink
-              }}</a>
-            </td>
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </v-card>
-  </v-layout>
+  <v-card>
+    <v-card-title primary-title class="headline">Vote Log (7 days retention)</v-card-title>
+    <v-card-text>
+      <v-data-table
+        :headers="headers"
+        :items="voteLog"
+        disable-initial-sort
+      >
+        <template slot="items" slot-scope="props">
+          <td class="pa-0" style="width: 11em">{{props.item.time}}</td>
+          <td class="pa-0" style="width: 11em">{{props.item.status}}</td>
+          <td class="pa-0 pl-3" style="width: 4em">{{props.item.weight}}</td>
+          <td class="pa-0 pl-3">
+            <a target="_blank" :href="baseUrl + props.item.permlink">{{
+            props.item.permlink.length > 48 ?
+              props.item.permlink.substring(0, 48) + '...'
+              : props.item.permlink
+            }}</a>
+          </td>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -65,31 +63,3 @@ export default class extends Vue {
 }
 </script>
 
-<!--
-<log>
-  <div class="grid p-1">
-    <div>
-      <h4>Vote Log (Previous 7 days)</h4>
-    </div>
-    <div class="row">
-      <div class="col-md-10">
-        <div id="authors-list" class="list-group"
-              style="height: 400px; overflow-y: scroll;">
-          <div class="list-group-item" style="user-select: none;" each={votes}>
-            <table>
-              <tr>
-                <td class="pr-1" style="width: 11em; font-weight: 500;">{time}</td>
-                <td class="pr-1" style="width: 8em;">{status}</td>
-                <td class="pr-1" style="width: 4em;">{weight}</td>
-                <td>
-                  <a href={baseUrl}{permlink} target="_blank">{permlink}</a>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</log>
--->

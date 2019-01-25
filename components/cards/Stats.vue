@@ -1,42 +1,40 @@
 <template>
-  <v-layout>
-    <v-card width="100%">
-      <v-card-title primary-title class="headline">Stats</v-card-title>
-      <v-card-text>
-        <v-layout row wrap>
-          <v-flex column xs12 sm3 md2>
-            <v-layout>
-              <span class="subheading">Voting power:</span>
-            </v-layout>
-            <v-layout style="padding-top: 10px;">
-              <v-progress-circular size="100" width="12" color="green" :value="votingPower">
-                <b>{{votingPower}}%</b>
-              </v-progress-circular>
-            </v-layout>
-          </v-flex>
-          <v-divider class="hidden-md-and-down" vertical />
-          <div class="hidden-sm-and-up" style="padding-top: 150px;"></div>
-          <v-flex column xs8 style="margin-left: 10px; max-width: 12em;">
-            <v-layout class="subheading" style="padding-bottom: 5px;">Plan:</v-layout>
-            <v-layout>
-              <v-layout>Current plan:</v-layout>
-              <v-layout justify-end>{{plan}}</v-layout>
-            </v-layout>
-            <v-divider />
-            <v-layout>
-              <v-layout>Expires:</v-layout>
-              <v-layout justify-end>{{user.premium.plan !== Plan.BRONZE ? expiry : 'Never'}}</v-layout>
-            </v-layout>
-            <v-divider />
-            <v-layout>
-              <v-layout>Curating:</v-layout>
-              <v-layout justify-end>{{curatingStat}}</v-layout>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-card-text>
-    </v-card>
-  </v-layout>
+  <v-card>
+    <v-card-title primary-title class="headline">Stats</v-card-title>
+    <v-card-text>
+      <v-layout row wrap>
+        <v-flex column xs12 sm3 md2>
+          <v-layout>
+            <span class="subheading">Voting power:</span>
+          </v-layout>
+          <v-layout style="padding-top: 10px;">
+            <v-progress-circular size="100" width="12" color="green" :value="votingPower">
+              <b>{{votingPower}}%</b>
+            </v-progress-circular>
+          </v-layout>
+        </v-flex>
+        <v-divider class="hidden-md-and-down" vertical />
+        <div class="hidden-sm-and-up" style="padding-top: 150px;"></div>
+        <v-flex column xs8 style="margin-left: 10px; max-width: 12em;">
+          <v-layout class="subheading" style="padding-bottom: 5px;">Plan:</v-layout>
+          <v-layout>
+            <v-layout>Current plan:</v-layout>
+            <v-layout justify-end>{{plan}}</v-layout>
+          </v-layout>
+          <v-divider />
+          <v-layout>
+            <v-layout>Expires:</v-layout>
+            <v-layout justify-end>{{user.premium.plan !== Plan.BRONZE ? expiry : 'Never'}}</v-layout>
+          </v-layout>
+          <v-divider />
+          <v-layout>
+            <v-layout>Curating:</v-layout>
+            <v-layout justify-end>{{curatingStat}}</v-layout>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
