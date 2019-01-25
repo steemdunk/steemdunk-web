@@ -9,7 +9,7 @@
       >
         <template slot="items" slot-scope="props">
           <td class="pa-0" style="width: 11em">{{props.item.time}}</td>
-          <td class="pa-0" style="width: 11em">{{props.item.status}}</td>
+          <td class="pa-0 pl-3" style="width: 13em">{{props.item.status}}</td>
           <td class="pa-0 pl-3" style="width: 4em">{{props.item.weight}}</td>
           <td class="pa-0 pl-3">
             <a target="_blank" :href="baseUrl + props.item.permlink">{{
@@ -43,7 +43,7 @@ export default class extends Vue {
     {
       text: 'Status',
       value: 'status',
-      class: 'pa-0'
+      class: ['pa-0', 'pl-3']
     },
     {
       text: 'Weight',
