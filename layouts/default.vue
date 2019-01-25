@@ -39,7 +39,11 @@
     <v-content>
       <nuxt />
     </v-content>
-    <v-footer fixed app>Steemdunk</v-footer>
+    <v-footer fixed app height="auto">
+      <v-layout class="pl-3" style="font-size: 1.1em;" justify-center>
+        <span>Steemdunk | <a target="_blank" href="https://discord.gg/hT7gw4B">Join us on Discord</a></span>
+      </v-layout>
+    </v-footer>
   </v-app>
 </template>
 
