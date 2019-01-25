@@ -163,7 +163,7 @@ export default class extends Vue {
         params: author
       });
       this.saving = SaveState.COMPLETE;
-      this.$store.commit('updateCuration', author);
+      this.$store.commit('curations/update', author);
     } catch (e) {
       this.saveError = e.message;
       this.saving = SaveState.ERROR;
@@ -182,7 +182,7 @@ export default class extends Vue {
         params: { author }
       });
       this.saving = SaveState.NONE;
-      this.$store.commit('rmCuration', author);
+      this.$store.commit('curations/remove', author);
       this.$emit('author-removed');
     } catch (e) {
       this.saveError = e.message;

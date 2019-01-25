@@ -83,7 +83,7 @@ import { User } from '~/src/user';
             session: user.session
           }
         });
-        this.$store.commit('reset');
+        await this.$store.dispatch('reset');
       } catch (e) {
         console.error('Failed to sign out', e);
       }

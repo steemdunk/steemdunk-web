@@ -64,7 +64,7 @@ export default class extends Vue {
 
   get curatingStat(): string {
     const quota = Payment.getQuota(this.user.premium.plan);
-    return `${this.$store.state.curating.length}/${quota}`;
+    return `${this.$store.state.curations.curating.length}/${quota}`;
   }
 
   get votingPower(): number {

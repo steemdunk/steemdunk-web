@@ -1,48 +1,22 @@
 import { User, Settings } from '~/src/user';
 import { RpcRequest } from '~/plugins/rpc';
+import { dateToString } from '~/src/util';
 import { Author } from '~/src/author';
 import Cookies from 'cookies';
 
 export const state = () => ({
-  user: undefined,
-  curating: undefined
+  user: undefined
 });
 
 export const mutations = {
   reset(state: any) {
     state.user = undefined;
-    state.curating = undefined;
   },
   user(state: any, user: User) {
     state.user = user;
   },
   userSettings(state: any, settings: Settings) {
     state.user.settings = settings;
-  },
-  sortCurations(state: any) {
-    state.curating.sort(function(a: Author, b: Author) {
-      return a.author < b.author ? -1 : 1;
-    });
-  },
-  curating(state: any, authors: Author[]) {
-    state.curating = authors;
-    mutations.sortCurations(state);
-  },
-  addCuration(state: any, author: Author) {
-    state.curating.push(author);
-    mutations.sortCurations(state);
-  },
-  updateCuration(state: any, author: Author) {
-    const curating: Author[] = state.curating;
-    let index = curating.findIndex(v => v.author === author.author);
-    if (index === -1) return;
-    curating[index] = author;
-  },
-  rmCuration(state: any, author: string) {
-    const curating: Author[] = state.curating;
-    const index = curating.findIndex(v => v.author === author);
-    if (index === -1) return;
-    curating.splice(index, 1);
   }
 };
 
@@ -72,10 +46,45 @@ export const actions = {
       const data: Author[] = (await this.$sendApiReq(<RpcRequest>{
         api: 'get_authors'
       })).data;
-      commit('curating', data);
+      commit('curations/set', data);
+    }
+
+    {
+      const res = await this.$sendApiReq(<RpcRequest>{
+        api: 'get_vote_log'
+      });
+      const data = res.data.map((val: any) => {
+        let status: string|undefined;
+        let weight: string|undefined;
+        if (val.status === 0) {
+          status = 'SUCCESS';
+          weight = val.weight + '%';
+        } else if (val.status === 1) {
+          status = 'MANUAL VOTE';
+          weight = val.weight + '%';
+        } else if (val.status === 2) {
+          status = 'FAIL';
+          weight = '-';
+        } else if (val.status === 3) {
+          status = 'DAILY LIMIT EXCEEDED';
+          weight = '-'
+        } else if (val.status === 4) {
+          status = 'PAUSED';
+          weight = '-';
+        }
+        return {
+          time: dateToString(new Date(val.timestamp)),
+          permlink: '@' + val.author + '/' + val.permlink,
+          weight,
+          status
+        };
+      });
+      commit('vote_log/set', data);
     }
   },
-  async curating({ state }): Promise<Author[]> {
-    return state.curating;
+  async reset({ commit }): Promise<void> {
+    commit('reset');
+    commit('curations/reset');
+    commit('vote_log/reset');
   }
 };

@@ -9,12 +9,16 @@
     <v-container>
       <Curating />
     </v-container>
+    <v-container>
+      <VoteLog />
+    </v-container>
   </v-layout>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
 import Settings from './cards/Settings.vue';
+import VoteLog from './cards/VoteLog.vue';
 import Curating from './cards/Curating';
 import Stats from './cards/Stats.vue';
 
@@ -22,7 +26,8 @@ import Stats from './cards/Stats.vue';
   components: {
     Stats,
     Settings,
-    Curating
+    Curating,
+    VoteLog
   }
 })
 export default class extends Vue {

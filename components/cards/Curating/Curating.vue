@@ -76,7 +76,7 @@ export default class Curating extends Vue {
 
   readonly SaveState = SaveState;
 
-  @State
+  @State(state => state.curations.curating)
   curating: Author[];
 
   panel: number|null = null;
