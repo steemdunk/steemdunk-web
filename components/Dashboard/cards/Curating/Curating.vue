@@ -12,7 +12,6 @@
           class="darken-on-hover"
           :class="{ 'author-is-active': isActive(author.author) }"
           ripple
-          lazy
         >
           <div slot="header">
             <div class="subheading font-weight-medium">{{ author.author }}</div>
@@ -23,7 +22,7 @@
               <span>{{ authorSettings.maxDailyVotes > 0 ? 'Active' : 'Paused' }}</span>
             </div>
           </div>
-          <v-card>
+          <v-card v-if="isActiveOrTransition(author.author)">
             <v-progress-linear
               :active="saving !== SaveState.NONE"
               :indeterminate="saving === SaveState.SAVING"
@@ -107,6 +106,11 @@ export default class Curating extends Vue {
 
   isActive(author: string): boolean {
     return this.authorSettings.author === author;
+  }
+
+  isActiveOrTransition(author: string): boolean {
+    return this.authorSettings.author === author
+            || this.authorTransition.author === author;
   }
 
   authorAdded(author: Author) {
