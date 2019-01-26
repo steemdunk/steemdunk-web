@@ -92,8 +92,8 @@
     </v-layout>
 
     <v-layout class="pt-2">
-      <v-btn @click="save" color="info">Save</v-btn>
-      <v-btn @click="remove" color="error">Remove</v-btn>
+      <v-btn @click="save" color="info"><v-icon class="pr-1">save</v-icon>Save</v-btn>
+      <v-btn @click="remove" color="error"><v-icon class="pr-1">delete</v-icon> Remove</v-btn>
     </v-layout>
 
     <v-layout>

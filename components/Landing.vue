@@ -36,7 +36,7 @@
           <span>community or need support. </span><a href="https://discord.gg/hT7gw4B" target="_blank">Join here</a>
         </div>
         <div>
-          <v-btn color="primary" :href=loginUrl><v-icon>input</v-icon>Sign in</v-btn>
+          <v-btn color="primary" :href=loginUrl><v-icon>exit_to_app</v-icon>Sign in</v-btn>
           <b style="font-style: oblique;">- or -</b>
           <v-btn color="primary" :href=loginUrl><v-icon>arrow_upward</v-icon>Sign up</v-btn>
         </div>
