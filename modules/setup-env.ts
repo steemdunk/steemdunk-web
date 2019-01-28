@@ -1,6 +1,6 @@
-const webpack = require('webpack');
+import webpack from 'webpack';
 
-export default function() {
+export default function(this: any) {
   this.extendBuild(config => {
     const defaults = {
       // SteemConnect settings
