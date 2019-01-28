@@ -1,6 +1,4 @@
-const path = require('path');
-
-module.exports = {
+export default {
   mode: 'universal',
 
   /*
@@ -60,9 +58,6 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    ['nuxt-ts', {
-      tsconfig: path.join(__dirname, 'tsconfig.json')
-    }],
     '~/modules/setup-env',
     '@nuxtjs/axios',
   ],
@@ -90,16 +85,5 @@ module.exports = {
     baseURL: 'http://localhost:3001',
     proxyHeaders: false,
     retry: { retries: 3 }
-  },
-
-  /*
-  ** Build configuration
-  */
-  build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend(config, cxt) {
-    }
   }
 }

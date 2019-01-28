@@ -1,12 +1,12 @@
 import { LoggerFactory } from 'steemdunk-common';
-import * as config from '../nuxt.config';
 import { Nuxt, Builder } from 'nuxt';
+import config from '../nuxt.config';
 import * as consola from 'consola';
 import * as route from 'koa-route';
 import { callback } from './auth';
-import * as Koa from 'koa';
 import axios from 'axios';
 import chalk from 'chalk';
+import Koa from 'koa';
 
 const logger = LoggerFactory.create('server');
 
@@ -15,7 +15,7 @@ const host = process.env.HOST || '127.0.0.1';
 const port = Number.parseInt(process.env.PORT || '3000');
 const trustProxy = process.env.TRUST_PROXY === 'true';
 
-config.dev = app.env !== 'production';
+(config as any).dev = app.env !== 'production';
 axios.defaults.baseURL = process.env.API_URL || config.axios.baseURL;
 
 async function start() {
@@ -23,7 +23,7 @@ async function start() {
   const nuxt = new Nuxt(config);
 
   // Build in development
-  if (config.dev) {
+  if ((config as any).dev) {
     const builder = new Builder(nuxt);
     await builder.build();
   }
