@@ -1,4 +1,4 @@
-import { Plan } from 'steemdunk-common';
+import { Plan } from '../node_modules/steemdunk-common/src/payment';
 
 export interface Premium {
   plan: Plan;

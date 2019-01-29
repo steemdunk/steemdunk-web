@@ -51,9 +51,8 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Model, Watch, State } from 'nuxt-property-decorator';
+import { Vue, Component, Watch, State } from 'nuxt-property-decorator';
 import AuthorSettings, { SaveState } from './Author.vue';
-import { RpcRequest } from '~/plugins/rpc';
 import AddAuthor from './AddAuthor.vue';
 import { Author } from '~/src/author';
 

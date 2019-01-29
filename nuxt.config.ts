@@ -85,5 +85,16 @@ export default {
     baseURL: 'http://localhost:3001',
     proxyHeaders: false,
     retry: { retries: 3 }
+  },
+
+  /*
+  ** Extend build configuration
+  */
+  build: {
+    extend(config: any) {
+      config.externals = {
+        cookies: 'cookies'
+      };
+    }
   }
 }

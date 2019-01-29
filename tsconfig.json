@@ -2,6 +2,7 @@
   "extends": "@nuxt/typescript",
   "compilerOptions": {
     "baseUrl": ".",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false
   }
 }

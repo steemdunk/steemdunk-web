@@ -21,7 +21,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async nuxtServerInit({ commit }, { req, res }) {
+  async nuxtServerInit(this: any, { commit }, { req, res }) {
     const cookies = new Cookies(req, res);
     const session = cookies.get('session');
     if (!session) return;
