@@ -2,7 +2,6 @@ import { User, Settings } from '~/src/user';
 import { RpcRequest } from '~/plugins/rpc';
 import { dateToString } from '~/src/util';
 import { Author } from '~/src/author';
-import Cookies from 'cookies';
 
 export const state = () => ({
   user: undefined
@@ -22,6 +21,7 @@ export const mutations = {
 
 export const actions = {
   async nuxtServerInit(this: any, { commit }, { req, res }) {
+    const Cookies = require('cookies');
     const cookies = new Cookies(req, res);
     const session = cookies.get('session');
     if (!session) return;
