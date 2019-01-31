@@ -9,8 +9,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
-import Dashboard from '~/components/Dashboard';
-import Landing from '~/components/Landing.vue';
+const Dashboard = () => import('~/components/Dashboard');
+const Landing = () => import('~/components/Landing.vue');
 
 @Component({
   components: { Landing, Dashboard }
