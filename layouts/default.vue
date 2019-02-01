@@ -86,6 +86,7 @@ export default class extends Vue {
         }
       });
       await this.$store.dispatch('reset');
+      this.$router.push('/');
     } catch (e) {
       console.error('Failed to sign out', e);
     }

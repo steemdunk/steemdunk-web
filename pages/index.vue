@@ -1,21 +1,23 @@
 <template>
-  <div v-if="loggedIn">
-    <Dashboard />
-  </div>
-  <div v-else>
+  <div>
     <Landing :loginUrl=loginUrl />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
-const Dashboard = () => import('~/components/Dashboard');
 const Landing = () => import('~/components/Landing.vue');
 
 @Component({
-  components: { Landing, Dashboard }
+  components: { Landing }
 })
 export default class extends Vue {
+
+  fetch({ store, redirect }) {
+    if (store.state.user !== undefined) {
+      redirect('/dashboard');
+    }
+  }
 
   get loginUrl(): string {
     const host = process.env.SC_HOST!;
