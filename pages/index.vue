@@ -16,7 +16,7 @@
           <v-icon>toc</v-icon><b>Flexible and cost effective.</b>
           <span>We offer multiple plans depending on how many authors you want </span>
           <span>to curate. The free plan is entirely free to use.</span>
-          <nuxt-link to="/upgrade">View the details here</nuxt-link>
+          <nuxt-link to="/plan">View the details here</nuxt-link>
         </div>
         <div>
           <v-icon>flash_on</v-icon><b>Fast and secure.</b>

@@ -31,7 +31,7 @@
             <v-layout>Curating:</v-layout>
             <v-layout justify-end>{{curatingStat}}</v-layout>
           </v-layout>
-            <v-btn color="info" to="/upgrade" small outline>Manage Plan</v-btn>
+            <v-btn color="info" to="/plan" small outline>Manage Plan</v-btn>
         </v-flex>
       </v-layout>
     </v-card-text>
