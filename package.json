@@ -27,11 +27,11 @@
   "devDependencies": {
     "@types/koa": "^2.0.48",
     "@types/koa-route": "^3.2.4",
-    "@types/node": "^10.12.20",
+    "@types/node": "^10.12.21",
     "nodemon": "^1.11.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "ts-loader": "^5.3.3",
-    "typescript": "^3.2.4"
+    "typescript": "^3.3.1"
   }
 }
