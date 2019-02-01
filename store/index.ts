@@ -33,10 +33,11 @@ export const actions = {
     if (!session) return;
 
     try {
-      const data = (await this.$sendApiReq(<RpcRequest>{
+      const user: User = (await this.$sendApiReq(<RpcRequest>{
         api: 'get_account'
       }, session)).data;
-      commit('user', data);
+      user.premium.expiry = new Date(user.premium.expiry);
+      commit('user', user);
     } catch (e) {
       if (e.response && e.response.status === 401) {
         // Session expired
