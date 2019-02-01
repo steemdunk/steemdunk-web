@@ -12,11 +12,6 @@
       "@/*": [
         "./*"
       ]
-    },
-    "typeRoots": [
-      "./node_modules/vue-router/types",
-      //"./node_modules/types",
-      //"./typings"
-    ]
+    }
   }
 }

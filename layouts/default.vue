@@ -58,6 +58,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import VueRouter from 'vue-router';
 import { User } from '~/src/user';
 
 @Component
