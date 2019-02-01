@@ -69,7 +69,7 @@ import { Vue, Component } from 'nuxt-property-decorator';
 export default class extends Vue {
 
   fetch({ store, redirect }) {
-    if (store.state.user !== undefined) {
+    if (store.getters.loggedIn) {
       redirect('/dashboard');
     }
   }
@@ -88,10 +88,6 @@ export default class extends Vue {
     const scope = `scope=${encodeURIComponent(['offline', 'vote'].join(','))}`;
 
     return `${auth}?${clientId}&${response}&${redirect}&${scope}`;
-  }
-
-  get loggedIn(): boolean {
-    return this.$store.state.user !== undefined;
   }
 }
 </script>

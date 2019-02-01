@@ -57,7 +57,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, State, Getter } from 'nuxt-property-decorator';
 import VueRouter from 'vue-router';
 import { User } from '~/src/user';
 
@@ -66,13 +66,11 @@ export default class extends Vue {
   @Prop({ default: 'Steemdunk' })
   title: string;
 
-  get loggedIn(): boolean {
-    return this.user !== undefined;
-  }
+  @State
+  user: User;
 
-  get user(): User {
-    return this.$store.state.user;
-  }
+  @Getter
+  loggedIn: boolean;
 
   get avatarUrl(): string {
     return `https://steemitimages.com/u/${this.user.username}/avatar/medium`;
@@ -80,10 +78,9 @@ export default class extends Vue {
 
   async signOut() {
     try {
-      const user: User = this.$store.state.user;
       await this.$axios.post('/signout', undefined, {
         headers: {
-          session: user.session
+          session: this.user.session
         }
       });
       await this.$store.dispatch('reset');

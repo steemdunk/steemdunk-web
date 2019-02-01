@@ -19,6 +19,12 @@ export const mutations = {
   }
 };
 
+export const getters = {
+  loggedIn(state: any) {
+    return state.user !== undefined;
+  }
+}
+
 export const actions = {
   async nuxtServerInit(this: any, { commit }, { req, res }) {
     const Cookies = require('cookies');
