@@ -26,6 +26,26 @@
               </v-sheet>
             </v-flex>
           </v-layout>
+          <v-layout justify-center row wrap class="pt-3">
+            <v-select
+              :items="availablePlans"
+              @change="planSelected"
+              class="ma-1"
+              style="max-width: 210px;"
+              label="Select a plan"
+            />
+            <v-select
+              :items="paymentPeriods"
+              @change="periodSelected"
+              style="max-width: 210px;"
+              label="Select a payment period"
+              class="ma-1"
+            />
+            <v-btn class="success" :disabled="!canUpgrade">
+              <span>{{this.user.premium.plan === model.selectedPlan
+                      ? 'Renew' : 'Upgrade'}}</span>
+            </v-btn>
+          </v-layout>
         </v-card-text>
       </v-card>
     </v-container>
@@ -75,8 +95,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, State, Getter } from 'nuxt-property-decorator';
-import { Plan, PlanPrice, CurationQuota } from '~/src/common';
+import { Vue, Component, State, Getter, Watch } from 'nuxt-property-decorator';
+import { Plan, PlanPrice, CurationQuota, Payment } from '~/src/common';
 import { dateToString } from '~/src/util';
 import { User } from '~/src/user';
 
@@ -88,6 +108,11 @@ function monthlyPriceString(plan: PlanPrice) {
   return `$${plan} SBD / Monthly`;
 }
 
+enum PaymentPeriod {
+  MONTHLY,
+  ANNUALLY
+}
+
 @Component
 export default class extends Vue {
 
@@ -96,6 +121,40 @@ export default class extends Vue {
 
   @Getter
   loggedIn: boolean;
+
+  model: {
+    selectedPlan?: Plan,
+    period?: PaymentPeriod
+  } = {
+    selectedPlan: undefined,
+    period: undefined
+  };
+
+  get canUpgrade() {
+    return this.model.selectedPlan && this.model.period;
+  }
+
+  get availablePlans() {
+    const curPlan = this.user.premium.plan;
+    const plans = Payment.getUpgradablePlans(curPlan).map(value => {
+      return {
+        value,
+        text: Plan[value]
+      };
+    });
+    plans.splice(0, 0, {
+      value: curPlan,
+      text: Plan[curPlan]
+    });
+    return plans;
+  }
+
+  get paymentPeriods() {
+    return [
+      { value: 'monthly', text: 'Monthly' },
+      { value: 'annually', text: 'Annually' }
+    ]
+  }
 
   get plans() {
     const plans = [];
@@ -130,6 +189,27 @@ export default class extends Vue {
 
   get currentPlanExpiry() {
     return dateToString(this.user.premium.expiry);
+  }
+
+  planSelected(plan: Plan) {
+    this.model.selectedPlan = plan;
+  }
+
+  periodSelected(period: PaymentPeriod) {
+    this.model.period = period;
+  }
+
+  transferUrl(plan: Plan, monthly: boolean) {
+    const base = process.env.SC_HOST + '/sign/transfer';
+    const from = encodeURIComponent(this.user.username);
+    const to = encodeURIComponent(process.env.SC_BROADCAST_ACCOUNT);
+    const amount = PlanPrice[Plan[plan] + monthly ? '_MONTHLY' : ''];
+    const memo = Plan[plan] + (monthly ? '_MONTHLY' : '');
+    return base
+            + '?from=' + from
+            + '&to='+ to
+            + '&amount=' + encodeURIComponent(amount.toFixed(3) + ' SBD')
+            + '&memo=' + encodeURIComponent(memo);
   }
 }
 </script>
