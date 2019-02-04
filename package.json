@@ -22,7 +22,7 @@
     "nuxt-ts": "^2.4.2",
     "steemdunk-common": "git+https://github.com/steemdunk/steemdunk-common.git#14d4db9",
     "ts-node": "^8.0.2",
-    "vuetify": "^1.4.4"
+    "vuetify": "^1.4.6"
   },
   "devDependencies": {
     "@types/koa": "^2.0.48",
