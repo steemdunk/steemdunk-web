@@ -26,7 +26,7 @@
               </v-sheet>
             </v-flex>
           </v-layout>
-          <v-layout justify-center row wrap class="pt-3">
+          <v-layout v-if="loggedIn" justify-center row wrap class="pt-3">
             <v-select
               :items="availablePlans"
               @change="planSelected"
