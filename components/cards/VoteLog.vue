@@ -44,17 +44,20 @@ export default class extends Vue {
     {
       text: 'Status',
       value: 'status',
-      class: ['pa-0', 'pl-3']
+      class: ['pa-0', 'pl-3'],
+      sortable: false
     },
     {
       text: 'Weight',
       value: 'weight',
-      class: ['pa-0', 'pl-3']
+      class: ['pa-0', 'pl-3'],
+      sortable: false
     },
     {
       text: 'Permlink',
       value: 'permlink',
-      class: ['pa-0', 'pl-3']
+      class: ['pa-0', 'pl-3'],
+      sortable: false
     }
   ];
 
@@ -63,4 +66,3 @@ export default class extends Vue {
 
 }
 </script>
-
