@@ -41,8 +41,13 @@
               label="Select a payment period"
               class="ma-1"
             />
-            <v-btn class="success" :disabled="!canUpgrade">
-              <span>{{this.user.premium.plan === model.selectedPlan
+            <v-btn
+              :disabled="!canUpgrade"
+              :href="transferUrl(model.selectedPlan, model.period)"
+              class="success"
+              target="_blank"
+            >
+              <span>{{user.premium.plan === model.selectedPlan
                       ? 'Renew' : 'Upgrade'}}</span>
             </v-btn>
           </v-layout>
@@ -131,7 +136,8 @@ export default class extends Vue {
   };
 
   get canUpgrade() {
-    return this.model.selectedPlan && this.model.period;
+    return this.model.selectedPlan !== undefined
+      && this.model.period !== undefined;
   }
 
   get availablePlans() {
@@ -151,8 +157,8 @@ export default class extends Vue {
 
   get paymentPeriods() {
     return [
-      { value: 'monthly', text: 'Monthly' },
-      { value: 'annually', text: 'Annually' }
+      { value: PaymentPeriod.MONTHLY, text: 'Monthly' },
+      { value: PaymentPeriod.ANNUALLY, text: 'Annually' }
     ]
   }
 
@@ -199,12 +205,13 @@ export default class extends Vue {
     this.model.period = period;
   }
 
-  transferUrl(plan: Plan, monthly: boolean) {
+  transferUrl(plan: Plan, monthly: PaymentPeriod): string {
+    if (plan === undefined || monthly === undefined) return '#';
     const base = process.env.SC_HOST + '/sign/transfer';
     const from = encodeURIComponent(this.user.username);
     const to = encodeURIComponent(process.env.SC_BROADCAST_ACCOUNT);
-    const amount = PlanPrice[Plan[plan] + monthly ? '_MONTHLY' : ''];
-    const memo = Plan[plan] + (monthly ? '_MONTHLY' : '');
+    const amount = PlanPrice[Plan[plan] + (monthly === PaymentPeriod.MONTHLY ? '_MONTHLY' : '')];
+    const memo = Plan[plan] + (monthly === PaymentPeriod.MONTHLY ? '_MONTHLY' : '');
     return base
             + '?from=' + from
             + '&to='+ to
