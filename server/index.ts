@@ -11,8 +11,8 @@ import Koa from 'koa';
 const logger = LoggerFactory.create('server');
 
 const app = new Koa();
-const host = process.env.HOST || '127.0.0.1';
-const port = Number.parseInt(process.env.PORT || '3000');
+const host = process.env.SD_WEB_HOST || '127.0.0.1';
+const port = Number.parseInt(process.env.SD_WEB_PORT || '3000');
 const trustProxy = process.env.TRUST_PROXY === 'true';
 
 (config as any).dev = app.env !== 'production';
