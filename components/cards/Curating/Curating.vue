@@ -79,7 +79,9 @@ export default class Curating extends Vue {
   @State(state => state.curations.curating)
   curating: Author[];
 
+  observer: MutationObserver|null = null;
   panel: number|null = null;
+
   authorSettings: Author = defaultAuthorModel();
   authorTransition: Author = defaultAuthorModel();
 
@@ -96,26 +98,46 @@ export default class Curating extends Vue {
     }
   }
 
+  // Vue lifecycle event
+  beforeDestroy() {
+    this.disconnectObserver();
+  }
+
+  disconnectObserver() {
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+  }
+
   @Watch('panel')
   updatePanelState(index?: number|null): void {
+    this.disconnectObserver();
+    this.authorTransition = Object.assign({}, this.authorSettings);
     if (index === null || index === undefined) {
-      this.authorTransition = Object.assign({}, this.authorSettings);
       this.authorSettings = defaultAuthorModel();
-    } else {
-      this.authorTransition = Object.assign({}, this.authorSettings);
-      this.authorSettings = Object.assign({}, this.curating[index]);
-
-      setTimeout(() => {
-        const panel = this.$refs.panel as Vue;
-        const el = panel.$el as any;
-        (this.$vuetify.goTo as any)(panel.$children[index], {
-          container: panel,
-          duration: 300,
-          offset: el.offsetParent.offsetTop + el.offsetTop,
-          easing: 'easeInOutCubic'
-        });
-      }, 450);
+      return;
     }
+
+    this.authorSettings = Object.assign({}, this.curating[index]);
+    this.observer = new MutationObserver(records => {
+      for (let r of records) {
+        const cl = (r.target as HTMLElement).getAttribute('class');
+        if (cl && !/expand-transition-enter-active/.test(cl)) {
+          this.disconnectObserver();
+          this.scrollToAuthor();
+          break;
+        }
+      }
+    });
+
+    const panel = this.$refs.panel as Vue;
+    const child = panel.$children[index];
+    const el = child.$el.querySelector('.v-expansion-panel__body');
+    this.observer.observe(el!, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
   }
 
   isActive(author: string): boolean {
@@ -135,7 +157,21 @@ export default class Curating extends Vue {
     }
     this.authorTransition = Object.assign({}, this.authorSettings);
     this.authorSettings = Object.assign({}, author);
-    this.panel = index;
+    this.$nextTick(() => {
+      this.panel = index;
+    });
+  }
+
+  scrollToAuthor() {
+    if (this.panel === null) return;
+    const panel = this.$refs.panel as Vue;
+    const el = panel.$el as any;
+    (this.$vuetify.goTo as any)(panel.$children[this.panel], {
+      container: panel,
+      duration: 300,
+      offset: el.offsetParent.offsetTop + el.offsetTop,
+      easing: 'easeInOutCubic'
+    });
   }
 }
 </script>
