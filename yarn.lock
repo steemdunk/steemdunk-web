@@ -6718,9 +6718,9 @@ std-env@^2.2.1:
   dependencies:
     ci-info "^1.6.0"
 
-"steemdunk-common@git+https://github.com/steemdunk/steemdunk-common.git#14d4db9":
+"steemdunk-common@git+https://github.com/steemdunk/steemdunk-common.git#c2c8e30":
   version "0.0.1"
-  resolved "git+https://github.com/steemdunk/steemdunk-common.git#14d4db9ca560dc9d918482ed6dd24f5238e75009"
+  resolved "git+https://github.com/steemdunk/steemdunk-common.git#c2c8e30ff0393cc1000deb2b156be463c6971c7e"
   dependencies:
     chalk "^2.4.2"
     debug "^4.1.0"
