@@ -114,7 +114,7 @@ export default class Curating extends Vue {
           offset: el.offsetParent.offsetTop + el.offsetTop,
           easing: 'easeInOutCubic'
         });
-      }, 300);
+      }, 450);
     }
   }
 
