@@ -100,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, State, Getter, Watch } from 'nuxt-property-decorator';
+import { Vue, Component, State, Getter } from 'nuxt-property-decorator';
 import { Plan, PlanPrice, CurationQuota, Payment } from '~/src/common';
 import { dateToString } from '~/src/util';
 import { User } from '~/src/user';
@@ -163,7 +163,7 @@ export default class extends Vue {
   }
 
   get plans() {
-    const plans = [];
+    const plans: any[] = [];
 
     for (let planStr of Object.keys(Plan)) {
       const plan: Plan = Number(planStr);
@@ -209,7 +209,7 @@ export default class extends Vue {
     if (plan === undefined || monthly === undefined) return '#';
     const base = process.env.SC_HOST + '/sign/transfer';
     const from = encodeURIComponent(this.user.username);
-    const to = encodeURIComponent(process.env.SC_BROADCAST_ACCOUNT);
+    const to = encodeURIComponent(process.env.SC_BROADCAST_ACCOUNT!);
     const amount = PlanPrice[Plan[plan] + (monthly === PaymentPeriod.MONTHLY ? '_MONTHLY' : '')];
     const memo = Plan[plan] + (monthly === PaymentPeriod.MONTHLY ? '_MONTHLY' : '');
     return base

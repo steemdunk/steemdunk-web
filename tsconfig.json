@@ -3,7 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "noImplicitAny": false,
+    "strict": true,
     "strictPropertyInitialization": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "experimentalDecorators": true,
     "paths": {
       "~/*": [

@@ -57,8 +57,10 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Prop, State, Getter } from 'nuxt-property-decorator';
+// @ts-ignore: Import necessary to include the router types
 import VueRouter from 'vue-router';
+
+import { Component, Vue, Prop, State, Getter } from 'nuxt-property-decorator';
 import { User } from '~/src/user';
 
 @Component
