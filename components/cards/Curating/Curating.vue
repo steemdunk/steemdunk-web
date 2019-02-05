@@ -5,12 +5,16 @@
       <AddAuthor @author-added="authorAdded" />
     </v-card-actions>
     <v-card-text>
-      <v-expansion-panel style="overflow: auto; max-height: 450px;" v-model="panel">
+      <v-expansion-panel
+        v-model="panel"
+        style="overflow: auto; max-height: 400px;"
+        ref="panel"
+      >
         <v-expansion-panel-content
           v-for="(author, index) in curating"
           :key="index"
-          class="darken-on-hover"
           :class="{ 'author-is-active': isActive(author.author) }"
+          class="darken-on-hover"
           ripple
         >
           <div slot="header">
@@ -100,6 +104,17 @@ export default class Curating extends Vue {
     } else {
       this.authorTransition = Object.assign({}, this.authorSettings);
       this.authorSettings = Object.assign({}, this.curating[index]);
+
+      setTimeout(() => {
+        const panel = this.$refs.panel as Vue;
+        const el = panel.$el as any;
+        (this.$vuetify.goTo as any)(panel.$children[index], {
+          container: panel,
+          duration: 300,
+          offset: el.offsetParent.offsetTop + el.offsetTop,
+          easing: 'easeInOutCubic'
+        });
+      }, 300);
     }
   }
 
