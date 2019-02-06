@@ -7,7 +7,7 @@
     <v-card-text>
       <v-expansion-panel
         v-model="panel"
-        style="overflow: auto; max-height: 400px;"
+        style="overflow: auto; max-height: 450px;"
         ref="panel"
       >
         <v-expansion-panel-content
