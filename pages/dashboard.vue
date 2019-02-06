@@ -1,5 +1,11 @@
 <template>
   <div v-if="loggedIn">
+    <v-container class="pb-0">
+      <v-alert :value="premiumExpired" type="error">
+        <span>Your premium plan has expired, certain functions may be </span>
+        <span>disabled.</span>
+      </v-alert>
+    </v-container>
     <v-container>
       <Stats />
     </v-container>
@@ -34,6 +40,9 @@ export default class extends Vue {
 
   @Getter
   loggedIn: boolean;
+
+  @Getter
+  premiumExpired: boolean;
 
   fetch({ store, redirect }) {
     if (!store.getters.loggedIn) {
