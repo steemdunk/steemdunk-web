@@ -92,7 +92,14 @@
     </v-layout>
 
     <v-layout class="pt-2">
-      <v-btn @click="save" color="info"><v-icon class="pr-1">save</v-icon>Save</v-btn>
+      <v-btn
+        :disabled="premiumExpired"
+        @click="save"
+        color="info"
+      >
+        <v-icon class="pr-1">save</v-icon>
+        <span>Save</span>
+      </v-btn>
       <v-btn @click="remove" color="error"><v-icon class="pr-1">delete</v-icon> Remove</v-btn>
     </v-layout>
 
@@ -108,7 +115,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch } from 'nuxt-property-decorator';
+import { Component, Prop, Watch, Getter } from 'nuxt-property-decorator';
 import { Author } from '~/src/author';
 import Vue from 'vue';
 
@@ -130,6 +137,9 @@ export default class extends Vue {
     voteDelay: val => (val >= 0 && val <= 1440) || 'Out of range.',
     maxDailyVotes: val => (val >= 0 && val <= 20) || 'Out of range.'
   };
+
+  @Getter
+  premiumExpired: boolean;
 
   @Prop()
   authorSettings: Author;

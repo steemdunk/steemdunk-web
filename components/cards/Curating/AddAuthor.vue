@@ -11,12 +11,13 @@
       :error="!!form.author.error"
       :error-messages="form.author.error"
       spellcheck="false"
+      :disabled="premiumExpired"
     ></v-text-field>
   </v-form>
 </template>
 
 <script lang="ts">
-import { Component, Model } from 'nuxt-property-decorator';
+import { Component, Model, Getter } from 'nuxt-property-decorator';
 import { Author } from '~/src/author';
 import Vue from 'vue';
 
@@ -49,6 +50,9 @@ export default class extends Vue {
       maxDailyVotes: 10
     };
   }
+
+  @Getter
+  premiumExpired: boolean;
 
   @Model(undefined, { default: () => defaultFormModel() })
   form: Form;
