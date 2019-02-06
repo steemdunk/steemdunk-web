@@ -64,7 +64,7 @@
           <div style="font-size: 1.2em;">
             <div v-if="loggedIn">
               <v-layout row wrap>
-                <v-flex xs10 sm5 md4 lg3>
+                <v-flex xs12 sm7 md5 lg4>
                   <v-layout>
                     <v-layout>Current plan:</v-layout>
                     <v-layout justify-end>{{currentPlan}}</v-layout>
@@ -74,7 +74,9 @@
                   </v-layout>
                   <v-layout>
                     <v-layout>Expires:</v-layout>
-                    <v-layout justify-end>{{currentPlanExpiry}}</v-layout>
+                    <v-layout justify-end :class="{ 'red--text font-weight-bold': premiumExpired }">
+                      <span>{{currentPlanExpiry}}</span>
+                    </v-layout>
                   </v-layout>
                 </v-flex>
               </v-layout>
@@ -126,6 +128,9 @@ export default class extends Vue {
 
   @Getter
   loggedIn: boolean;
+
+  @Getter
+  premiumExpired: boolean;
 
   model: {
     selectedPlan?: Plan,
@@ -193,8 +198,11 @@ export default class extends Vue {
     return Plan[this.user.premium.plan];
   }
 
-  get currentPlanExpiry() {
-    return dateToString(this.user.premium.expiry);
+  get currentPlanExpiry(): string {
+    if (this.user.premium.plan == Plan.BRONZE) return 'Never';
+    let str = dateToString(this.user.premium.expiry);
+    if (this.premiumExpired) str += ' - Expired';
+    return str;
   }
 
   planSelected(plan: Plan) {

@@ -15,7 +15,7 @@
         </v-flex>
         <v-divider class="hidden-md-and-down" vertical />
         <div class="hidden-sm-and-up" style="padding-top: 150px;"></div>
-        <v-flex xs8 style="margin-left: 10px; max-width: 12em;">
+        <v-flex xs8 style="margin-left: 10px; max-width: 13.5em;">
           <v-layout class="subheading" style="padding-bottom: 5px;">Plan:</v-layout>
           <v-layout>
             <v-layout>Current plan:</v-layout>
@@ -24,7 +24,9 @@
           <v-divider />
           <v-layout>
             <v-layout>Expires:</v-layout>
-            <v-layout justify-end>{{user.premium.plan !== Plan.BRONZE ? expiry : 'Never'}}</v-layout>
+            <v-layout justify-end :class="{ 'red--text font-weight-bold': premiumExpired }">
+              <span>{{expiry}}</span>
+            </v-layout>
           </v-layout>
           <v-divider />
           <v-layout>
@@ -39,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator';
+import { Vue, Component, Getter } from 'nuxt-property-decorator';
 import { Payment, Plan } from '~/src/common';
 import { dateToString } from '~/src/util';
 import { User } from '~/src/user';
@@ -48,6 +50,9 @@ import { User } from '~/src/user';
 export default class extends Vue {
 
   readonly Plan = Plan;
+
+  @Getter
+  premiumExpired: boolean;
 
   get user(): User {
     return this.$store.state.user;
@@ -58,7 +63,10 @@ export default class extends Vue {
   }
 
   get expiry(): string {
-    return dateToString(this.user.premium.expiry, false);
+    if (this.user.premium.plan == Plan.BRONZE) return 'Never';
+    let str = dateToString(this.user.premium.expiry, false);
+    if (this.premiumExpired) str += ' - Expired';
+    return str;
   }
 
   get curatingStat(): string {

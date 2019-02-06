@@ -2,6 +2,7 @@ import { User, Settings } from '~/src/user';
 import { RpcRequest } from '~/plugins/rpc';
 import { dateToString } from '~/src/util';
 import { Author } from '~/src/author';
+import { Plan } from '~/src/common';
 
 export const state = () => ({
   user: undefined
@@ -22,6 +23,10 @@ export const mutations = {
 export const getters = {
   loggedIn(state: any) {
     return state.user !== undefined;
+  },
+  premiumExpired(state: any) {
+    return state.user.premium.plan !== Plan.BRONZE
+            && state.user.premium.expiry.getTime() <= Date.now();
   }
 }
 
