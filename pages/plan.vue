@@ -1,5 +1,29 @@
 <template>
   <div>
+    <v-container class="pb-0">
+      <v-alert :value="downgradeModel.error" type="error">{{downgradeModel.error}}</v-alert>
+    </v-container>
+    <v-dialog width="500" v-model="downgradeModel.display">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>
+          <span>Are you sure you want to downgrade?</span>
+        </v-card-title>
+        <v-card-text>
+          <span>Your account will be immediately downgraded </span>
+          <span>and any benefits of your current plan will be terminated. </span>
+          <span>If your curation count exceeds the plan limit, authors must </span>
+          <span>be removed before proceeding.</span>
+        </v-card-text>
+        <v-card-text v-if="model.selectedPlan !== Plan.BRONZE">
+          <span>You will be directed to SteemConnect for payment. No actions </span>
+          <span>will be taken to your account until payment is received.</span>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn flat color="error" @click="downgradeAccount">Accept</v-btn>
+          <v-btn flat @click="downgradeModel.display = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-container>
       <v-card>
         <v-card-title primary-title class="headline">Payment Plans</v-card-title>
@@ -9,7 +33,7 @@
               <v-sheet class="pa-3 ma-2" elevation="3">
                 <v-layout column>
                   <v-layout justify-center>
-                    <strong class="title">{{plan.name}}</strong>
+                    <strong class="title">{{plan.text}}</strong>
                   </v-layout>
                   <v-divider class="my-2" />
                   <div>
@@ -28,7 +52,7 @@
           </v-layout>
           <v-layout v-if="loggedIn" justify-center row wrap class="pt-3">
             <v-select
-              :items="availablePlans"
+              :items="plans"
               @change="planSelected"
               class="ma-1"
               style="max-width: 210px;"
@@ -36,6 +60,7 @@
             />
             <v-select
               :items="paymentPeriods"
+              :disabled="model.selectedPlan === Plan.BRONZE"
               @change="periodSelected"
               style="max-width: 210px;"
               label="Select a payment period"
@@ -49,6 +74,16 @@
             >
               <span>{{user.premium.plan === model.selectedPlan
                       ? 'Renew' : 'Upgrade'}}</span>
+            </v-btn>
+            <v-btn
+              v-if="user.premium.plan !== Plan.BRONZE"
+              @click="downgradeModel.display = true"
+              :disabled="model.selectedPlan === undefined
+                          || (model.selectedPlan !== Plan.BRONZE && model.period === undefined)
+                          || user.premium.plan <= model.selectedPlan"
+              class="error"
+            >
+              <span>Downgrade</span>
             </v-btn>
           </v-layout>
         </v-card-text>
@@ -103,9 +138,10 @@
 
 <script lang="ts">
 import { Vue, Component, State, Getter } from 'nuxt-property-decorator';
-import { Plan, PlanPrice, CurationQuota, Payment } from '~/src/common';
+import { Plan, PlanPrice, CurationQuota } from '~/src/common';
 import { dateToString } from '~/src/util';
 import { User } from '~/src/user';
+import { ApiError } from '~/plugins/rpc';
 
 function annualPriceString(plan: PlanPrice) {
   return `$${plan} SBD / Annually`;
@@ -123,6 +159,8 @@ enum PaymentPeriod {
 @Component
 export default class extends Vue {
 
+  readonly Plan = Plan;
+
   @State
   user: User;
 
@@ -132,32 +170,21 @@ export default class extends Vue {
   @Getter
   premiumExpired: boolean;
 
-  model: {
-    selectedPlan?: Plan,
-    period?: PaymentPeriod
-  } = {
-    selectedPlan: undefined,
-    period: undefined
+  downgradeModel = {
+    display: false,
+    error: null as string|null
+  };
+
+  model = {
+    selectedPlan: undefined as Plan|undefined,
+    period: undefined as PaymentPeriod|undefined
   };
 
   get canUpgrade() {
     return this.model.selectedPlan !== undefined
+      && this.model.selectedPlan !== Plan.BRONZE
+      && this.user.premium.plan <= this.model.selectedPlan
       && this.model.period !== undefined;
-  }
-
-  get availablePlans() {
-    const curPlan = this.user.premium.plan;
-    const plans = Payment.getUpgradablePlans(curPlan).map(value => {
-      return {
-        value,
-        text: Plan[value]
-      };
-    });
-    plans.splice(0, 0, {
-      value: curPlan,
-      text: Plan[curPlan]
-    });
-    return plans;
   }
 
   get paymentPeriods() {
@@ -175,18 +202,20 @@ export default class extends Vue {
       if (isNaN(plan)) continue;
       if (plan === Plan.BRONZE) {
         plans.push({
-          name: 'BRONZE',
+          value: plan,
+          text: 'BRONZE',
           annualPrice: 'FREE',
           monthlyPrice: '-',
           curationQuota: CurationQuota.BRONZE
         });
       } else {
-        const name = Plan[plan];
+        const text = Plan[plan];
         plans.push({
-          name,
-          annualPrice: annualPriceString(PlanPrice[name]),
-          monthlyPrice: monthlyPriceString(PlanPrice[name + '_MONTHLY']),
-          curationQuota: CurationQuota[name]
+          value: plan,
+          text,
+          annualPrice: annualPriceString(PlanPrice[text]),
+          monthlyPrice: monthlyPriceString(PlanPrice[text + '_MONTHLY']),
+          curationQuota: CurationQuota[text]
         });
       }
     }
@@ -214,7 +243,9 @@ export default class extends Vue {
   }
 
   transferUrl(plan: Plan, monthly: PaymentPeriod): string {
-    if (plan === undefined || monthly === undefined) return '#';
+    if (plan === undefined
+        || plan === Plan.BRONZE
+        || monthly === undefined) return '#';
     const base = process.env.SC_HOST + '/sign/transfer';
     const from = encodeURIComponent(this.user.username);
     const to = encodeURIComponent(process.env.SC_BROADCAST_ACCOUNT!);
@@ -225,6 +256,32 @@ export default class extends Vue {
             + '&to='+ to
             + '&amount=' + encodeURIComponent(amount.toFixed(3) + ' SBD')
             + '&memo=' + encodeURIComponent(memo);
+  }
+
+  async downgradeAccount() {
+    this.downgradeModel.display = false;
+    this.downgradeModel.error = null;
+
+    const plan = this.model.selectedPlan!;
+    if (plan === Plan.BRONZE) {
+      try {
+        const data = (await this.$sendApiReq({
+          api: 'bronze_downgrade'
+        })).data;
+        this.$store.commit('userPremium', data);
+      } catch (e) {
+        if (e instanceof ApiError) {
+          this.downgradeModel.error = e.message;
+          this.$vuetify.goTo(0);
+          return;
+        }
+        throw e;
+      }
+      return;
+    }
+
+    const url = this.transferUrl(plan, this.model.period!);
+    window.open(url, '_blank');
   }
 }
 </script>

@@ -1,4 +1,4 @@
-import { User, Settings } from '~/src/user';
+import { User, Settings, Premium } from '~/src/user';
 import { RpcRequest } from '~/plugins/rpc';
 import { dateToString } from '~/src/util';
 import { Author } from '~/src/author';
@@ -17,6 +17,9 @@ export const mutations = {
   },
   userSettings(state: any, settings: Settings) {
     state.user.settings = settings;
+  },
+  userPremium(state: any, premium: Premium) {
+    state.user.premium = premium;
   }
 };
 
