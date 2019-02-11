@@ -1,3 +1,8 @@
+# Common
+Dockerfile
+.editorconfig
+README.md
+
 # Logs
 logs
 *.log
@@ -9,9 +14,6 @@ node_modules/
 
 # dotenv environment variables file
 .env
-
-# next.js build output
-.next
 
 # nuxt.js build output
 .nuxt
