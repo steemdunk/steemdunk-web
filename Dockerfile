@@ -7,7 +7,7 @@ RUN apk update && \
         git
 
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile && \
+RUN yarn install --frozen-lockfile --network-concurrency 1 && \
       rm -r /usr/local/share/.cache
 
 COPY . .
