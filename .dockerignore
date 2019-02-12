@@ -1,11 +1,14 @@
 # Common
 Dockerfile
-.editorconfig
 README.md
+.dockerignore
+.editorconfig
+.gitignore
+.git
 
 # Logs
 logs
-*.log
+**/*.log
 yarn-debug.log*
 yarn-error.log*
 
@@ -26,4 +29,4 @@ dist
 .vscode
 
 # System generated files
-.DS_Store
+**/*.DS_Store
