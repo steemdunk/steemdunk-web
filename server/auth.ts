@@ -20,7 +20,7 @@ export const callback = async function(ctx: Context) {
 
     return ctx.redirect('/');
   } catch (e) {
-    if (e.response.status === 401) {
+    if (e.response && e.response.status === 401) {
       ctx.status = 401;
       ctx.body = 'Authentication failed';
     } else {
