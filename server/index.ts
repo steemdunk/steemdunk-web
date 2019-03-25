@@ -21,6 +21,7 @@ axios.defaults.baseURL = process.env.API_URL || config.axios.baseURL;
 async function start() {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config);
+  await nuxt.ready();
 
   // Build in development
   if ((config as any).dev) {
