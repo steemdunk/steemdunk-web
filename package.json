@@ -8,7 +8,9 @@
     "dev": "cross-env NODE_ENV=development nodemon -e ts --watch server --exec 'ts-node --files -P tsconfig.server.json server/index.ts'",
     "clean": "rm -r .nuxt",
     "build": "nuxt build",
-    "start": "cross-env NODE_ENV=production ts-node --files -P tsconfig.server.json server/index.ts"
+    "start": "cross-env NODE_ENV=production ts-node --files -P tsconfig.server.json server/index.ts",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "@nuxt/typescript": "^2.6.3",
@@ -22,7 +24,8 @@
     "nuxt-property-decorator": "^2.1.3",
     "steemdunk-common": "git+https://github.com/steemdunk/steemdunk-common.git#212f422",
     "ts-node": "^8.1.0",
-    "vuetify": "^1.5.14"
+    "vuetify": "^1.5.14",
+    "snyk": "^1.161.1"
   },
   "devDependencies": {
     "@types/koa": "^2.0.48",
@@ -33,5 +36,6 @@
     "stylus-loader": "^3.0.2",
     "ts-loader": "^5.4.5",
     "typescript": "^3.4.5"
-  }
+  },
+  "snyk": true
 }
