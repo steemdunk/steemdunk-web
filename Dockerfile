@@ -1,4 +1,4 @@
-FROM node:12.1.0-alpine
+FROM node:12.4.0-alpine
 WORKDIR /app
 
 RUN apk update && \
